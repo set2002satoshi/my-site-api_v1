@@ -25,5 +25,8 @@ func (r *Routing) setRouting() {
 }
 
 func (r *Routing) Run() {
-	r.Gin.Run(r.Port)
+	err := r.Gin.Run(r.Port)
+	if err != nil {
+		panic(err)
+	}
 }
