@@ -1,5 +1,5 @@
-FROM golang:1.15.2-alpine
+FROM golang:1.17
 
-WORKDIR /app/back-api
+WORKDIR /go/app/src
 
 CMD ["go", "run", "main.go"]

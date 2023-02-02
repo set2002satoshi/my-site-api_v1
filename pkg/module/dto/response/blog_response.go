@@ -4,7 +4,7 @@ type (
 	FindAllActiveBlogResponse struct {
 		Result *ActiveBlogResults `json:"result"`
 
-		CodeErr error  `json:"error"`
+		CodeErr error `json:"error"`
 		MsgErr  string `json:"msg"`
 	}
 
@@ -18,7 +18,7 @@ type (
 	CreateActiveBlogResponse struct {
 		Result *ActiveBlogResult `json:"results"`
 
-		CodeErr error  `json:"code"`
+		CodeErr error  `json:"error"`
 		MsgErr  string `json:"msg"`
 	}
 
@@ -53,11 +53,12 @@ type (
 
 type (
 	ActiveBlogEntity struct {
-		BlogId int
+		BlogId  int
 		User_id int
-		Title string
+		Title   string
 		Content string
 		Option  Options
 	}
 )
+
 

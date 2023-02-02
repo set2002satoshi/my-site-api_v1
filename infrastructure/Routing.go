@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"github.com/gin-gonic/gin"
+	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
 )
 
 type Routing struct {
@@ -21,7 +22,11 @@ func NewRouting(db *DB) *Routing {
 }
 
 func (r *Routing) setRouting() {
-	// controllersを呼び出してDBを渡してrouterにセットする。
+	usersController := uc.NewUserController(r.DB)
+	userNotLoggedIn := r.Gin.Group("/api")
+	{
+		userNotLoggedIn.POST("/users", func(c *gin.Context) { usersController.Create(c) })
+	}
 }
 
 func (r *Routing) Run() {

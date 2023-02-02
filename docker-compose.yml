@@ -1,20 +1,20 @@
-version: '3'
+version: "3"
 services:
-  blog-api:
+  backend:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    container_name: blog-back-api
+      dockerfile: ./dockerfile
+    container_name: blog-api
     stdin_open: true
     volumes:
-      - ./:/app/back-api
+      - ./:/go/app/src
     ports:
      - 8000:8080
     depends_on:
-     - blog-db
-  blog-db:
+     - mysql
+  mysql:
     image: mysql:8.0
-    container_name: blog-db-mysql
+    container_name: db-api
     ports:
       - 3306:3306
     environment:
