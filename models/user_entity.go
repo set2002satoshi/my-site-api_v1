@@ -74,7 +74,7 @@ func (ue *UserEntity) GetUpdatedAt() time.Time {
 func (ue *UserEntity) setUserId(id int) error {
 	i, err := types.NewIDENTIFICATION(id)
 	if err != nil {
-		return err
+		return errors.Wrap(errors.NewCustomError(), errors.EN0001, err.Error())
 	}
 	ue.UserId = i
 	return nil
@@ -102,7 +102,7 @@ func (ue *UserEntity) setPassword(password string) error {
 func (ue *UserEntity) setRoll(roll string) error {
 	rl, err := types.NewAccessROLL(roll)
 	if err != nil {
-		return err
+		return errors.Wrap(errors.NewCustomError(), errors.EN0003, err.Error())
 	}
 	ue.Roll = rl
 	return nil

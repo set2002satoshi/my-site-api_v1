@@ -7,10 +7,19 @@ const (
 	ERR0001 = "ERROR0001"
 	ERR0002 = "ERROR0002"
 
-	TYPE0001 = "TYPE0001"
+	REPO0001 = "REPO0001"
+	REPO0002 = "REPO0002"
 
+
+	TYPE0001 = "TYPE0001"
+	
 	DB0001 = "DB0001"
 	DB0002 = "DB0002"
+
+
+	EN0001 = "EN0001"
+	EN0002 = "EN0002"
+	EN0003 = "EN0003"
 
 	UNDEFINED = "UNDEFINED"
 )
@@ -20,10 +29,18 @@ var ErrMap = map[string]string{
 	ERR0001: "failure BindJSON",
 	ERR0002: "failure to Model",
 
+	REPO0001: "create user failed",
+	REPO0002: "created user but user found",
+	
+
 	TYPE0001: "ID is less than or equal to zero",
 
 	DB0001: "failure db connect",
 	DB0002: "failure migration",
+
+	EN0001: "this id is invalid id",
+	EN0002: "password couldn't not be hashed",
+	EN0003: "this roll is invalid roll",
 
 	UNDEFINED: "undefined",
 }
