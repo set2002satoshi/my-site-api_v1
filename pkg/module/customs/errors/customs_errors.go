@@ -4,6 +4,7 @@ import "fmt"
 
 const (
 	ERR0000 = "ERROR0000"
+	ERR0001 = "ERROR0001"
 
 	TYPE0001 = "TYPE0001"
 
@@ -15,6 +16,7 @@ const (
 
 var ErrMap = map[string]string{
 	ERR0000: "error code undetermined",
+	ERR0001: "failure BindJSON",
 
 	TYPE0001: "ID is less than or equal to zero",
 

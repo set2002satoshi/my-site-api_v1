@@ -2,6 +2,8 @@ package types
 
 import (
 	"fmt"
+
+	"github.com/set2002satoshi/my-site-api/pkg/module/customs/errors"
 )
 
 const (
@@ -14,7 +16,7 @@ type IDENTIFICATION int
 
 func NewIDENTIFICATION(id int) (IDENTIFICATION, error) {
 	if id < 0 {
-		return IDENTIFICATION(id), fmt.Errorf("ID is less than or equal to zero")
+		return IDENTIFICATION(0), fmt.Errorf(errors.ERR0000)
 	}
 	return IDENTIFICATION(id), nil
 }
