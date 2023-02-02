@@ -7,4 +7,5 @@ import (
 
 type UserRepository interface {
 	Create(db *gorm.DB, obj *models.UserEntity) (*models.UserEntity, error)
+	FetchEmailNumber(db *gorm.DB, email string) (int64, error)
 }
