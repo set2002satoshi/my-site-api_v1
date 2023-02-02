@@ -1,5 +1,7 @@
 package response
 
+import "github.com/set2002satoshi/my-site-api/pkg/module/customs/errors"
+
 type (
 	FindAllActiveUserResponse struct {
 		Result *ActiveUserResults `json:"result"`
@@ -11,15 +13,13 @@ type (
 	FindByIDActiveUserResponse struct {
 		Result *ActiveUserResult `json:"result"`
 
-		CodeErr string  `json:"error"`
-		MsgErr  string `json:"msg"`
+		Errors errors.Errors
 	}
 
 	CreateActiveUserResponse struct {
 		Result *ActiveUserResult `json:"results"`
 
-		CodeErr string  `json:"code"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 
 	UpdateActiveUserResponse struct {
@@ -56,7 +56,7 @@ type (
 		UserId   int
 		UserName string
 		Password string
-		UserRoll int
+		UserRoll string
 		Blogs    []ActiveBlogEntity
 		Option   Options
 	}

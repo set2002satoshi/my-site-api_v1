@@ -11,13 +11,13 @@ type (
 		Email    string `json:"email"`
 		Name     string `json:"name"`
 		Password string `json:"pass"`
-		Roll     int    `json:"roll"`
+		Roll     string `json:"roll"`
 	}
 
 	UserUpdateRequest struct {
 		Email    string `json:"email"`
 		Name     string `json:"name"`
 		Password string `json:"password"`
-		Roll     int    `json:"roll"`
+		Roll     string `json:"roll"`
 	}
 )

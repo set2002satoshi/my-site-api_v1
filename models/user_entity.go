@@ -13,7 +13,7 @@ type UserEntity struct {
 	Email     string
 	UserName  string
 	Password  []byte
-	Roll      types.Roll
+	Roll      types.AccessROLL
 	Blogs     []BlogEntity `gorm:"foreignKey:UserId"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -24,7 +24,7 @@ func NewUserEntity(
 	Email string,
 	userName,
 	password string,
-	roll int,
+	roll string,
 	createdAt,
 	updatedAt time.Time,
 ) (*UserEntity, error) {
@@ -59,7 +59,7 @@ func (ue *UserEntity) GetPassword() string {
 	return string(ue.Password)
 }
 
-func (ue *UserEntity) GetRoll() types.Roll {
+func (ue *UserEntity) GetRoll() types.AccessROLL {
 	return ue.Roll
 }
 
@@ -99,8 +99,8 @@ func (ue *UserEntity) setPassword(password string) error {
 	return nil
 }
 
-func (ue *UserEntity) setRoll(roll int) error {
-	rl, err := types.NewRoll(roll)
+func (ue *UserEntity) setRoll(roll string) error {
+	rl, err := types.NewAccessROLL(roll)
 	if err != nil {
 		return err
 	}

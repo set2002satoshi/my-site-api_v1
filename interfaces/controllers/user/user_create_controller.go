@@ -18,32 +18,24 @@ type (
 	}
 )
 
-func (uc *CreateActiveUserResponse) setErr(err error, errMsg string) {
-	uc.CodeErr = err.Error()
-	uc.MsgErr = errMsg
-}
-
 func (uc *UserController) Create(ctx c.Context) {
 	req := &request.UserCreateRequest{}
 	res := &CreateActiveUserResponse{}
 
 	if err := ctx.BindJSON(req); err != nil {
-		res.setErr(err, errors.ERR0001)
-		ctx.JSON(http.StatusOK, res)
+		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0001, err.Error()), res))
 		return
 	}
 	// skip Validation
 
 	reqModel, err := uc.cToModel(req)
 	if err != nil {
-		res.setErr(err, errors.ERR0000)
-		ctx.JSON(http.StatusOK, res)
+		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0001, err.Error()), res))
 		return
 	}
 	ok, err := uc.Interactor.Register(reqModel)
 	if err != nil {
-		res.setErr(err, errors.ERR0001)
-		ctx.JSON(http.StatusOK, res)
+		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
 		return
 	}
 	res.Result = &response.ActiveUserResult{User: uc.convertActiveUserToDTO(ok)}
@@ -60,4 +52,18 @@ func (uc *UserController) cToModel(req *request.UserCreateRequest) (*models.User
 		time.Time{},
 		time.Time{},
 	)
+}
+
+func (c *CreateActiveUserResponse) SetErr(err error) {
+
+	h := make([]errors.ErrorInfo, 0)
+
+	for k, v := range errors.ToMap(err) {
+		e := errors.ErrorInfo{
+			ErrCode: k,
+			ErrMsg:  v,
+		}
+		h = append(h, e)
+	}
+	c.Errors = h
 }
