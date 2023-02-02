@@ -10,9 +10,9 @@ import (
 
 type UserEntity struct {
 	UserId    types.IDENTIFICATION `gorm:"primaryKey"`
-	Email     string
-	UserName  string
-	Password  []byte
+	Email     string               `gorm:"unique;not null"`
+	UserName  string               `gorm:"not null;max:16"`
+	Password  []byte               `gorm:"not null;max:32"`
 	Roll      types.AccessROLL
 	Blogs     []BlogEntity `gorm:"foreignKey:UserId"`
 	CreatedAt time.Time

@@ -20,3 +20,10 @@ func (repo *UserRepository) Create(db *gorm.DB, obj *models.UserEntity) (*models
 	}
 	return createdUser, nil
 }
+
+
+func (repo *UserRepository) FetchEmailNumber(db *gorm.DB, email string) (int64, error) {
+	var count int64
+	result := db.Model(&models.UserEntity{}).Where("email = ?", email).Count(&count)
+	return count, result.Error
+}

@@ -7,7 +7,7 @@ import (
 
 type CategoryEntity struct {
 	CategoryID   types.IDENTIFICATION `gorm:"primaryKey"`
-	CategoryName string
+	CategoryName string               `gorm:"unique;not null;max:18"`
 }
 
 func New(

@@ -10,8 +10,8 @@ import (
 type BlogEntity struct {
 	BlogId    types.IDENTIFICATION `gorm:"primaryKey"`
 	UserId    types.IDENTIFICATION
-	Title     string
-	Content   string
+	Title     string `gorm:"not null;max:26"`
+	Content   string `gorm:"not null;max:100"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
