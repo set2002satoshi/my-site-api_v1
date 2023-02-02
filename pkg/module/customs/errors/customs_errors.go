@@ -5,11 +5,21 @@ import "fmt"
 const (
 	ERR0000 = "ERROR0000"
 	ERR0001 = "ERROR0001"
+	ERR0002 = "ERROR0002"
+
+	REPO0001 = "REPO0001"
+	REPO0002 = "REPO0002"
+
 
 	TYPE0001 = "TYPE0001"
-
+	
 	DB0001 = "DB0001"
 	DB0002 = "DB0002"
+
+
+	EN0001 = "EN0001"
+	EN0002 = "EN0002"
+	EN0003 = "EN0003"
 
 	UNDEFINED = "UNDEFINED"
 )
@@ -17,11 +27,20 @@ const (
 var ErrMap = map[string]string{
 	ERR0000: "error code undetermined",
 	ERR0001: "failure BindJSON",
+	ERR0002: "failure to Model",
+
+	REPO0001: "create user failed",
+	REPO0002: "created user but user found",
+	
 
 	TYPE0001: "ID is less than or equal to zero",
 
 	DB0001: "failure db connect",
 	DB0002: "failure migration",
+
+	EN0001: "this id is invalid id",
+	EN0002: "password couldn't not be hashed",
+	EN0003: "this roll is invalid roll",
 
 	UNDEFINED: "undefined",
 }
@@ -35,11 +54,15 @@ type (
 		add(code string)
 		addSet(code, message string)
 		combine(err error)
+		isContain(code string) bool
+		isEmpty() bool
 		getMap() map[string]string
+		wrap(code, message string)
 	}
 )
 
 var _ iCustomError = &customError{}
+
 
 func NewCustomError(codes ...string) error {
 	e := &customError{ErrorMap: map[string]string{}}
@@ -51,12 +74,10 @@ func NewCustomError(codes ...string) error {
 
 func New(s string) error {
 	c := &customError{ErrorMap: map[string]string{}}
-	c.addSet(s, s)
+	c.addSet(UNDEFINED, s)
 	return c
 }
 
-// 第一引数には現状のエラーを渡す。第二引数には追加するエラーを渡す
-// そうすると命名通りエラーを組み合わせる事ができる。
 func Combine(origin, new error) error {
 	if origin == nil && new == nil {
 		return nil
@@ -79,6 +100,16 @@ func Combine(origin, new error) error {
 	return cErr
 }
 
+func Wrap(err error, code, message string) error {
+	if cErr, ok := err.(iCustomError); ok {
+		cErr.wrap(code, message)
+		return cErr
+	}
+	cErr := &customError{ErrorMap: map[string]string{}}
+	cErr.wrap(code, message)
+	return cErr
+}
+
 func Add(err error, code string) error {
 	if cErr, ok := err.(iCustomError); ok {
 		cErr.add(code)
@@ -92,6 +123,20 @@ func Add(err error, code string) error {
 	return cErr
 }
 
+func IsContain(err error, code string) bool {
+	if cErr, ok := err.(iCustomError); ok {
+		return cErr.isContain(code)
+	}
+	return false
+}
+
+func IsEmpty(err error) bool {
+	if cErr, ok := err.(iCustomError); ok {
+		return cErr.isEmpty()
+	}
+	return err == nil
+}
+
 func ToMap(err error) map[string]string {
 	if cErr, ok := err.(iCustomError); ok {
 		return cErr.getMap()
@@ -103,7 +148,6 @@ func ToMap(err error) map[string]string {
 	return c.getMap()
 }
 
-// errorのキーをもらってエラー内容を埋め込んでる。
 func (c *customError) add(code string) {
 	if _, ok := ErrMap[code]; ok {
 		c.ErrorMap[code] = getMessage(code)
@@ -117,11 +161,10 @@ func (c *customError) addSet(code, message string) {
 	}
 	c.ErrorMap[code] = message
 }
-
 func (c *customError) combine(err error) {
 	if cErr, ok := err.(iCustomError); ok {
-		for k := range cErr.getMap() {
-			c.add(k)
+		for k, v := range cErr.getMap() {
+			c.addSet(k, v)
 		}
 		return
 	}
@@ -129,9 +172,30 @@ func (c *customError) combine(err error) {
 		c.addSet(UNDEFINED, err.Error())
 	}
 }
+func (c *customError) isContain(code string) bool {
+	_, ok := c.ErrorMap[code]
+	return ok
+}
+
+func (c *customError) isEmpty() bool {
+	fmt.Println(len(c.ErrorMap))
+	return len(c.ErrorMap) == 0
+}
 
 func (c *customError) getMap() map[string]string {
 	return c.ErrorMap
+}
+
+func (c *customError) wrap(code, message string) {
+	if _, ok := c.ErrorMap[code]; ok {
+		c.ErrorMap[code] = fmt.Sprintf("%s=>%s", c.ErrorMap[code], message)
+		return
+	}
+	if _, ok := ErrMap[code]; ok {
+		c.ErrorMap[code] = fmt.Sprintf("%s=>%s", ErrMap[code], message)
+		return
+	}
+	c.addSet(UNDEFINED, message)
 }
 
 func getMessage(code string) string {
@@ -152,5 +216,6 @@ func (c customError) Error() string {
 		}
 		msg = fmt.Sprintf("%s, %s", msg, v)
 	}
+
 	return msg
 }
