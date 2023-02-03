@@ -33,12 +33,12 @@ func (uc *UserController) Create(ctx c.Context) {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0001, err.Error()), res))
 		return
 	}
-	ok, err := uc.Interactor.Register(reqModel)
+	createdUser, err := uc.Interactor.Register(reqModel)
 	if err != nil {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
 		return
 	}
-	res.Result = &response.ActiveUserResult{User: uc.convertActiveUserToDTO(ok)}
+	res.Result = &response.ActiveUserResult{User: uc.convertActiveUserToDTO(createdUser)}
 	ctx.JSON(http.StatusOK, res)
 }
 

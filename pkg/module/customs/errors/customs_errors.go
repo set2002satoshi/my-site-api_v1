@@ -10,13 +10,12 @@ const (
 	REPO0001 = "REPO0001"
 	REPO0002 = "REPO0002"
 	REPO0003 = "REPO0003"
-
+	REPO0004 = "REPO0004"
 
 	TYPE0001 = "TYPE0001"
-	
+
 	DB0001 = "DB0001"
 	DB0002 = "DB0002"
-
 
 	EN0001 = "EN0001"
 	EN0002 = "EN0002"
@@ -33,6 +32,7 @@ var ErrMap = map[string]string{
 	REPO0001: "create user failed",
 	REPO0002: "created user but user found",
 	REPO0003: "that email address not unique",
+	REPO0004: "failed get user",
 
 	TYPE0001: "ID is less than or equal to zero",
 
@@ -63,7 +63,6 @@ type (
 )
 
 var _ iCustomError = &customError{}
-
 
 func NewCustomError(codes ...string) error {
 	e := &customError{ErrorMap: map[string]string{}}

@@ -4,10 +4,9 @@ import "github.com/set2002satoshi/my-site-api/pkg/module/customs/errors"
 
 type (
 	FindAllActiveUserResponse struct {
-		Result *ActiveUserResults `json:"result"`
+		Results ActiveUserResults `json:"result"`
 
-		CodeErr string  `json:"error"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 
 	FindByIDActiveUserResponse struct {
@@ -32,10 +31,10 @@ type (
 
 type (
 	ActiveUserResult struct {
-		User *ActiveUserEntity `json:"user"`
+		User ActiveUserEntity `json:"user"`
 	}
 	ActiveUserResults struct {
-		Users []*ActiveUserEntity `json:"users"`
+		Users []ActiveUserEntity `json:"users"`
 	}
 
 	// HistoreUserResult struct {
@@ -61,3 +60,4 @@ type (
 		Option   Options
 	}
 )
+		

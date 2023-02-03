@@ -20,7 +20,12 @@ func (ui *UserInteractor) Register(obj *models.UserEntity) (*models.UserEntity, 
 	return ui.UserRepo.Create(db, obj)
 }
 
-func (si *UserInteractor) isUniqueEmail(db *gorm.DB, email string) bool {
-	count, _ := si.UserRepo.FetchEmailNumber(db, email)
+func(ui *UserInteractor) FindAll() ([]*models.UserEntity, error) {
+	db := ui.DB.Connect()
+	return ui.UserRepo.GetAll(db)
+}
+
+func (ui *UserInteractor) isUniqueEmail(db *gorm.DB, email string) bool {
+	count, _ := ui.UserRepo.FetchEmailNumber(db, email)
 	return count == 0
 }
