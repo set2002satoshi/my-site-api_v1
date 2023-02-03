@@ -1,7 +1,7 @@
 package request
 
 type (
-	UserFindByIDRequest struct {
+	UserFindByIdRequest struct {
 		ID int `json:"id"`
 	}
 	UserDeleteRequest struct {

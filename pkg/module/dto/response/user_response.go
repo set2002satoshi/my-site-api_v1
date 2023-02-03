@@ -9,10 +9,10 @@ type (
 		Errors []errors.ErrorInfo
 	}
 
-	FindByIDActiveUserResponse struct {
-		Result *ActiveUserResult `json:"result"`
+	FindByIdActiveUserResponse struct {
+		Result ActiveUserResult `json:"result"`
 
-		Errors errors.Errors
+		Errors []errors.ErrorInfo
 	}
 
 	CreateActiveUserResponse struct {
@@ -24,8 +24,7 @@ type (
 	UpdateActiveUserResponse struct {
 		Result *ActiveUserResult `json:"results"`
 
-		CodeErr string  `json:"code"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 )
 
@@ -52,12 +51,11 @@ type (
 
 type (
 	ActiveUserEntity struct {
-		UserId   int
-		UserName string
-		Password string
-		UserRoll string
+		UserId   int `json:"user_id"`
+		UserName string `json:"user_name"`
+		Password string `json:"password"`
+		UserRoll string `json:"user_roll"`
 		Blogs    []ActiveBlogEntity
-		Option   Options
+		Option   Options `json:"option"`
 	}
 )
-		
