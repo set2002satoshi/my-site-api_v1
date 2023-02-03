@@ -12,17 +12,23 @@ type UserInteractor struct {
 	UserRepo UserRepository
 }
 
+
+func(ui *UserInteractor) FindAll() ([]*models.UserEntity, error) {
+	db := ui.DB.Connect()
+	return ui.UserRepo.GetAll(db)
+}
+
+func(ui *UserInteractor) FindById(id int) (*models.UserEntity, error) {
+	db := ui.DB.Connect()
+	return ui.UserRepo.GetById(db, id)
+}
+
 func (ui *UserInteractor) Register(obj *models.UserEntity) (*models.UserEntity, error) {
 	db := ui.DB.Connect()
 	if !ui.isUniqueEmail(db, obj.GetEmail()) {
 		return &models.UserEntity{}, errors.Add(errors.NewCustomError(), errors.REPO0003)
 	}
 	return ui.UserRepo.Create(db, obj)
-}
-
-func(ui *UserInteractor) FindAll() ([]*models.UserEntity, error) {
-	db := ui.DB.Connect()
-	return ui.UserRepo.GetAll(db)
 }
 
 func (ui *UserInteractor) isUniqueEmail(db *gorm.DB, email string) bool {
