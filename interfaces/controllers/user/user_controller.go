@@ -21,8 +21,8 @@ func NewUserController(db database.DB) *UserController {
 	}
 }
 
-func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) *response.ActiveUserEntity {
-	return &response.ActiveUserEntity{
+func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) response.ActiveUserEntity {
+	return response.ActiveUserEntity{
 		UserId:   int(obj.GetUserId()),
 		UserName: obj.GetUserName(),
 		Password: obj.GetPassword(),
@@ -36,23 +36,23 @@ func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) *respon
 	}
 }
 
-// func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []response.ActiveUserEntity {
-// 	UEs := make([]response.ActiveUserEntity, len(objs))
-// 	for i, obj := range objs {
+func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []response.ActiveUserEntity {
+	UEs := make([]response.ActiveUserEntity, len(objs))
+	for i, obj := range objs {
 
-// 		result := response.ActiveUserEntity{
-// 			UserId:   int(obj.GetUserId()),
-// 			UserName: obj.GetUserName(),
-// 			Password: obj.GetPassword(),
-// 			UserRoll: int(obj.GetUserRoll()),
-// 			Blogs:    []response.ActiveBlogEntity{},
-// 			Option: response.Options{
-// 				// Revision:  int(obj.GetRevision()),
-// 				CreatedAt: obj.GetCreatedAt(),
-// 				UpdatedAt: obj.GetUpdatedAt(),
-// 			},
-// 		}
-// 		UEs[i] = result
-// 	}
-// 	return UEs
-// }
+		result := response.ActiveUserEntity{
+			UserId:   int(obj.GetUserId()),
+			UserName: obj.GetUserName(),
+			Password: obj.GetPassword(),
+			UserRoll: string(obj.GetRoll()),
+			Blogs:    []response.ActiveBlogEntity{},
+			Option: response.Options{
+				// Revision:  int(obj.GetRevision()),
+				CreatedAt: obj.GetCreatedAt(),
+				UpdatedAt: obj.GetUpdatedAt(),
+			},
+		}
+		UEs[i] = result
+	}
+	return UEs
+}
