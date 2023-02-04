@@ -15,6 +15,7 @@ type UserEntity struct {
 	Password  []byte               `gorm:"not null;max:32"`
 	Roll      types.AccessROLL
 	Blogs     []BlogEntity `gorm:"foreignKey:UserId"`
+	Revision  types.REVISION
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -25,6 +26,7 @@ func NewUserEntity(
 	userName,
 	password string,
 	roll string,
+	revision int,
 	createdAt,
 	updatedAt time.Time,
 ) (*UserEntity, error) {
@@ -35,6 +37,7 @@ func NewUserEntity(
 	err = errors.Combine(err, ue.setUserName(userName))
 	err = errors.Combine(err, ue.setPassword(userName))
 	err = errors.Combine(err, ue.setRoll(roll))
+	err = errors.Combine(err, ue.setRevision(revision))
 	err = errors.Combine(err, ue.setCreatedAt(createdAt))
 	err = errors.Combine(err, ue.setUpdatedAt(updatedAt))
 	if err != nil {
@@ -61,6 +64,10 @@ func (ue *UserEntity) GetPassword() string {
 
 func (ue *UserEntity) GetRoll() types.AccessROLL {
 	return ue.Roll
+}
+
+func (ue *UserEntity) GetRevision() types.REVISION {
+	return ue.Revision
 }
 
 func (ue *UserEntity) GetCreatedAt() time.Time {
@@ -105,6 +112,21 @@ func (ue *UserEntity) setRoll(roll string) error {
 		return errors.Wrap(errors.NewCustomError(), errors.EN0003, err.Error())
 	}
 	ue.Roll = rl
+	return nil
+}
+
+func (ue *UserEntity) setRevision(revision int) error {
+	ue.Revision = types.REVISION(revision)
+	return nil
+}
+
+func (ue *UserEntity) CountUpRevision(currentNum types.REVISION) error {
+	if ue.Revision != currentNum {
+		return errors.Add(errors.NewCustomError(), errors.EN0004)
+	}
+	if err := ue.setRevision(int(currentNum) + 1); err != nil {
+		return errors.Wrap(errors.NewCustomError(), errors.EN0005, err.Error())
+	}
 	return nil
 }
 

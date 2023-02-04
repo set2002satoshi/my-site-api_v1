@@ -29,7 +29,7 @@ func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) respons
 		UserRoll: string(obj.GetRoll()),
 		Blogs:    []response.ActiveBlogEntity{},
 		Option: response.Options{
-			// Revision:  int(obj.GetRevision()),
+			Revision:  int(obj.GetRevision()),
 			CreatedAt: obj.GetCreatedAt(),
 			UpdatedAt: obj.GetUpdatedAt(),
 		},
@@ -47,7 +47,7 @@ func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []r
 			UserRoll: string(obj.GetRoll()),
 			Blogs:    []response.ActiveBlogEntity{},
 			Option: response.Options{
-				// Revision:  int(obj.GetRevision()),
+				Revision:  int(obj.GetRevision()),
 				CreatedAt: obj.GetCreatedAt(),
 				UpdatedAt: obj.GetUpdatedAt(),
 			},

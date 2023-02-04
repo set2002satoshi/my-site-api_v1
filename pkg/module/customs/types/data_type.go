@@ -26,6 +26,8 @@ func NewOneOrMoreIDENTIFICATION(id int) (IDENTIFICATION, error) {
 	return NewIDENTIFICATION(id)
 }
 
+type REVISION int
+
 // type Roll int
 
 // const (

@@ -20,6 +20,8 @@ const (
 	EN0001 = "EN0001"
 	EN0002 = "EN0002"
 	EN0003 = "EN0003"
+	EN0004 = "EN0004"
+	EN0005 = "EN0005"
 
 	UNDEFINED = "UNDEFINED"
 )
@@ -42,6 +44,8 @@ var ErrMap = map[string]string{
 	EN0001: "this id is invalid id",
 	EN0002: "password couldn't not be hashed",
 	EN0003: "this roll is invalid roll",
+	EN0004: "did not match revision number",
+	EN0005: "couldn't up revision number",
 
 	UNDEFINED: "undefined",
 }

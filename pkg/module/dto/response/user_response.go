@@ -16,13 +16,13 @@ type (
 	}
 
 	CreateActiveUserResponse struct {
-		Result *ActiveUserResult `json:"results"`
+		Result ActiveUserResult `json:"results"`
 
 		Errors []errors.ErrorInfo
 	}
 
 	UpdateActiveUserResponse struct {
-		Result *ActiveUserResult `json:"results"`
+		Result ActiveUserResult `json:"results"`
 
 		Errors []errors.ErrorInfo
 	}

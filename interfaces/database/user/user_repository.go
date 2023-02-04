@@ -8,7 +8,6 @@ import (
 
 type UserRepository struct{}
 
-
 func (repo *UserRepository) GetById(db *gorm.DB, id int) (*models.UserEntity, error) {
 	var findUser *models.UserEntity
 	if err := db.Where("user_id = ?", id).First(&findUser).Error; err != nil {
@@ -35,6 +34,13 @@ func (repo *UserRepository) Create(db *gorm.DB, obj *models.UserEntity) (*models
 		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0002, gorm.ErrRecordNotFound.Error())
 	}
 	return createdUser, nil
+}
+
+func (repo *UserRepository) Update(tx *gorm.DB, obj *models.UserEntity) (*models.UserEntity, error) {
+	if err := tx.Select("email", "user_name", "password", "roll", "revision").Updates(&obj).Error; err != nil {
+		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0003, err.Error())
+	}
+	return obj, nil
 }
 
 func (repo *UserRepository) FetchEmailNumber(db *gorm.DB, email string) (int64, error) {
