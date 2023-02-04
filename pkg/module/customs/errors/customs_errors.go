@@ -11,6 +11,7 @@ const (
 	REPO0002 = "REPO0002"
 	REPO0003 = "REPO0003"
 	REPO0004 = "REPO0004"
+	REPO0005 = "REPO0005"
 
 	TYPE0001 = "TYPE0001"
 
@@ -35,6 +36,7 @@ var ErrMap = map[string]string{
 	REPO0002: "created user but user found",
 	REPO0003: "that email address not unique",
 	REPO0004: "failed get user",
+	REPO0005: "record could not be deleted",
 
 	TYPE0001: "ID is less than or equal to zero",
 

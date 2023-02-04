@@ -10,5 +10,6 @@ type UserRepository interface {
 	GetAll(db *gorm.DB) ([]*models.UserEntity, error)
 	Create(db *gorm.DB, obj *models.UserEntity) (*models.UserEntity, error)
 	Update(tx *gorm.DB, obj *models.UserEntity) (*models.UserEntity, error)
+	Delete(db *gorm.DB, id int) error
 	FetchEmailNumber(db *gorm.DB, email string) (int64, error)
 }
