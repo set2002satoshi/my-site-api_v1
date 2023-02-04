@@ -26,6 +26,10 @@ type (
 
 		Errors []errors.ErrorInfo
 	}
+
+	DeleteActiveUserResponse struct {
+		Errors []errors.ErrorInfo
+	}
 )
 
 type (
@@ -51,7 +55,7 @@ type (
 
 type (
 	ActiveUserEntity struct {
-		UserId   int `json:"user_id"`
+		UserId   int    `json:"user_id"`
 		UserName string `json:"user_name"`
 		Password string `json:"password"`
 		UserRoll string `json:"user_roll"`

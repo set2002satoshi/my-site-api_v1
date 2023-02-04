@@ -43,6 +43,16 @@ func (repo *UserRepository) Update(tx *gorm.DB, obj *models.UserEntity) (*models
 	return obj, nil
 }
 
+func (repo *UserRepository) Delete(db *gorm.DB, id int) error {
+	if err := db.Unscoped().Delete(&models.UserEntity{}, id).Error; err != nil {
+		return errors.Add(errors.NewCustomError(), errors.REPO0005)
+	}
+	return nil
+}
+
+
+
+
 func (repo *UserRepository) FetchEmailNumber(db *gorm.DB, email string) (int64, error) {
 	var count int64
 	err := db.Model(&models.UserEntity{}).Where("email = ?", email).Count(&count).Error

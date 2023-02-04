@@ -68,8 +68,13 @@ func (ui *UserInteractor) Update(ctx c.Context, obj *models.UserEntity) (*models
 		return &models.UserEntity{}, err
 	}
 	return updatedObj, nil
-
 }
+
+func (ui *UserInteractor) Delete(id int)  error {
+	db := ui.DB.Connect()
+	return ui.UserRepo.Delete(db, id)
+}
+
 
 func (ui *UserInteractor) isUniqueEmail(db *gorm.DB, email string) bool {
 	count, _ := ui.UserRepo.FetchEmailNumber(db, email)
