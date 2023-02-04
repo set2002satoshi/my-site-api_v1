@@ -20,7 +20,7 @@ func (uc *UserController) FindAll(ctx c.Context) {
 
 	users, err := uc.Interactor.FindAll()
 	if err != nil {
-		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
+		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0001, err.Error()), res))
 		return
 	}
 	res.Results = response.ActiveUserResults{Users: uc.convertActiveUserToDTOs(users)}
