@@ -102,7 +102,7 @@ func (ue *UserEntity) setPassword(password string) error {
 	if err != nil {
 		return err
 	}
-	ue.Password = []byte(pass)
+	ue.Password = pass
 	return nil
 }
 

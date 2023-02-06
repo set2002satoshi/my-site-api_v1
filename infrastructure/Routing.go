@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"github.com/gin-gonic/gin"
 	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
+	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 )
 
 type Routing struct {
@@ -25,11 +26,23 @@ func (r *Routing) setRouting() {
 	usersController := uc.NewUserController(r.DB)
 	userNotLoggedIn := r.Gin.Group("/api")
 	{
-		userNotLoggedIn.POST("/users", func(c *gin.Context) { usersController.FindAll(c) })
+		
+		// user
+		userNotLoggedIn.POST("/login", func(c *gin.Context) { usersController.Login(c) })
 		userNotLoggedIn.POST("/user/id", func(c *gin.Context) { usersController.FindById(c) })
+		userNotLoggedIn.POST("/users", func(c *gin.Context) { usersController.FindAll(c) })
 		userNotLoggedIn.POST("/users/create", func(c *gin.Context) { usersController.Create(c) })
-		userNotLoggedIn.POST("/users/update", func(c *gin.Context) { usersController.Update(c) })
-		userNotLoggedIn.POST("/users/delete", func(c *gin.Context) { usersController.Delete(c) })
+		
+		
+	}
+	
+	userLoggedIn := r.Gin.Group("/api")
+	userLoggedIn.Use(auth.CheckLoggedIn())
+	{	
+		// user 
+		userLoggedIn.POST("/users/update", func(c *gin.Context) { usersController.Update(c) })
+		userLoggedIn.POST("/users/delete", func(c *gin.Context) { usersController.Delete(c) })
+		
 	}
 }
 

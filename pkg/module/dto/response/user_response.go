@@ -30,6 +30,12 @@ type (
 	DeleteActiveUserResponse struct {
 		Errors []errors.ErrorInfo
 	}
+
+	LoginUserResponse struct {
+		Result LoginUserResult
+
+		Errors []errors.ErrorInfo
+	}
 )
 
 type (
