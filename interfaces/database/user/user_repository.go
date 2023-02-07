@@ -50,7 +50,13 @@ func (repo *UserRepository) Delete(db *gorm.DB, id int) error {
 	return nil
 }
 
-
+func (repo *UserRepository) FindByEmail(db *gorm.DB, email string) (*models.UserEntity, error) {
+	var user *models.UserEntity
+	if err := db.Where("email = ?", email).First(&user).Error; err != nil {
+		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0004, gorm.ErrRecordNotFound.Error())
+	}
+	return user, nil
+}
 
 
 func (repo *UserRepository) FetchEmailNumber(db *gorm.DB, email string) (int64, error) {

@@ -6,6 +6,8 @@ import (
 	c "github.com/set2002satoshi/my-site-api/interfaces/controllers"
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/pkg/module/customs/errors"
+	dtoAuth "github.com/set2002satoshi/my-site-api/pkg/module/dto/auth"
+	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 	"github.com/set2002satoshi/my-site-api/usecase"
 	"gorm.io/gorm"
 )
@@ -57,7 +59,7 @@ func (ui *UserInteractor) Update(ctx c.Context, obj *models.UserEntity) (*models
 	if err != nil {
 		tx.Rollback()
 		return &models.UserEntity{}, err
-	} 
+	}
 	updatedObj, err := ui.UserRepo.Update(tx, joinObj)
 	if err != nil {
 		tx.Rollback()
@@ -70,11 +72,26 @@ func (ui *UserInteractor) Update(ctx c.Context, obj *models.UserEntity) (*models
 	return updatedObj, nil
 }
 
-func (ui *UserInteractor) Delete(id int)  error {
+func (ui *UserInteractor) Delete(id int) error {
 	db := ui.DB.Connect()
 	return ui.UserRepo.Delete(db, id)
 }
 
+func (ui *UserInteractor) FetchToken(obj *dtoAuth.UserLoginModel) (string, error) {
+	db := ui.DB.Connect()
+	findUser, err := ui.UserRepo.FindByEmail(db, obj.Email)
+	if err != nil {
+		return "", err
+	}
+	if auth.ComparisonPassAndHash(findUser.GetPassword(), obj.Password) {
+		return "", errors.Add(errors.NewCustomError(), errors.SE0002)
+	}
+	result, err := auth.IssueToken(int(findUser.GetUserId()))
+	if err != nil {
+		return "", errors.Wrap(errors.NewCustomError(), errors.SE0003, err.Error())
+	}
+	return result, nil
+}
 
 func (ui *UserInteractor) isUniqueEmail(db *gorm.DB, email string) bool {
 	count, _ := ui.UserRepo.FetchEmailNumber(db, email)
