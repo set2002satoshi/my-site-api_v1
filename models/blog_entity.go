@@ -12,6 +12,7 @@ type BlogEntity struct {
 	UserId    types.IDENTIFICATION
 	Title     string `gorm:"not null;max:26"`
 	Content   string `gorm:"not null;max:100"`
+	Revision  types.REVISION
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -21,6 +22,7 @@ func NewBlogEntity(
 	userId int,
 	title string,
 	content string,
+	revision int,
 	createdAt time.Time,
 	updatedAt time.Time,
 ) (*BlogEntity, error) {
@@ -30,6 +32,7 @@ func NewBlogEntity(
 	err = errors.Combine(err, be.setUserId(userId))
 	err = errors.Combine(err, be.setTitle(title))
 	err = errors.Combine(err, be.setContent(content))
+	err = errors.Combine(err, be.setRevision(revision))
 	err = errors.Combine(err, be.setCreatedAt(createdAt))
 	err = errors.Combine(err, be.setUpdatedAt(updatedAt))
 	if err != nil {
@@ -53,6 +56,11 @@ func (be *BlogEntity) GetTitle() string {
 func (be *BlogEntity) GetContent() string {
 	return be.Content
 }
+
+func (be *BlogEntity) GetRevision() types.REVISION {
+	return be.Revision
+}
+
 
 func (be *BlogEntity) GetCreatedAt() time.Time {
 	return be.CreatedAt
@@ -87,6 +95,11 @@ func (be *BlogEntity) setTitle(title string) error {
 
 func (be *BlogEntity) setContent(content string) error {
 	be.Content = content
+	return nil
+}
+
+func (be *BlogEntity) setRevision(revision int) error {
+	be.Revision = types.REVISION(revision)
 	return nil
 }
 

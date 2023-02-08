@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"github.com/gin-gonic/gin"
+	bc "github.com/set2002satoshi/my-site-api/interfaces/controllers/blog"
 	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
 	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 )
@@ -24,26 +25,39 @@ func NewRouting(db *DB) *Routing {
 
 func (r *Routing) setRouting() {
 	usersController := uc.NewUserController(r.DB)
+	blogsController := bc.NewBlogController(r.DB)
+
 	userNotLoggedIn := r.Gin.Group("/api")
 	{
-		
 		// user
 		userNotLoggedIn.POST("/login", func(c *gin.Context) { usersController.Login(c) })
-		userNotLoggedIn.POST("/user/id", func(c *gin.Context) { usersController.FindById(c) })
 		userNotLoggedIn.POST("/users", func(c *gin.Context) { usersController.FindAll(c) })
 		userNotLoggedIn.POST("/users/create", func(c *gin.Context) { usersController.Create(c) })
-		
 		
 	}
 	
 	userLoggedIn := r.Gin.Group("/api")
 	userLoggedIn.Use(auth.CheckLoggedIn())
-	{	
-		// user 
+	{
+		// user
+		userLoggedIn.POST("/user/id", func(c *gin.Context) { usersController.FindById(c) })
 		userLoggedIn.POST("/users/update", func(c *gin.Context) { usersController.Update(c) })
 		userLoggedIn.POST("/users/delete", func(c *gin.Context) { usersController.Delete(c) })
-		
+
 	}
+
+	// blogsNotLoggedIn := r.Gin.Group("/api")
+	// {
+	// 	blogsNotLoggedIn.POST("/blog", func(c *gin.Context) { blogsController.FindAll(c)})
+	// }
+
+	blogLoggedIn := r.Gin.Group("/api")
+	blogLoggedIn.Use(auth.CheckLoggedIn())
+	{
+		// blog
+		blogLoggedIn.POST("/blog/create", func(c *gin.Context) { blogsController.Create(c) })
+	}
+
 }
 
 func (r *Routing) Run() {

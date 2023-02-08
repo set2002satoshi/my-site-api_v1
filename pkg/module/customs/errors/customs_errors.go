@@ -6,17 +6,23 @@ const (
 	ERR0000 = "ERROR0000"
 	ERR0001 = "ERROR0001"
 	ERR0002 = "ERROR0002"
+	ERR0003 = "ERROR0003"
 
 	REPO0001 = "REPO0001"
 	REPO0002 = "REPO0002"
 	REPO0003 = "REPO0003"
 	REPO0004 = "REPO0004"
 	REPO0005 = "REPO0005"
+	REPO0006 = "REPO0006"
+	REPO0007 = "REPO0007"
+
 
 	TYPE0001 = "TYPE0001"
 
+
 	DB0001 = "DB0001"
 	DB0002 = "DB0002"
+
 
 	EN0001 = "EN0001"
 	EN0002 = "EN0002"
@@ -38,12 +44,15 @@ var ErrMap = map[string]string{
 	ERR0000: "error code undetermined",
 	ERR0001: "failure BindJSON",
 	ERR0002: "failure to Model",
+	ERR0003: "couldn't get userID",
 
 	REPO0001: "create user failed",
 	REPO0002: "created user but user found",
 	REPO0003: "that email address not unique",
 	REPO0004: "failed get user",
 	REPO0005: "record could not be deleted",
+	REPO0006: "create blog failed",
+	REPO0007: "created user but user found",
 
 	TYPE0001: "ID is less than or equal to zero",
 
