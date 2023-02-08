@@ -1,41 +1,39 @@
 package response
 
+import "github.com/set2002satoshi/my-site-api/pkg/module/customs/errors"
+
 type (
 	FindAllActiveBlogResponse struct {
-		Result *ActiveBlogResults `json:"result"`
+		Result ActiveBlogResults `json:"result"`
 
-		CodeErr error `json:"error"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 
 	FindByIDActiveBlogResponse struct {
-		Result *ActiveBlogResult `json:"result"`
+		Result ActiveBlogResult `json:"result"`
 
-		CodeErr error  `json:"error"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 
 	CreateActiveBlogResponse struct {
-		Result *ActiveBlogResult `json:"results"`
+		Result ActiveBlogResult `json:"results"`
 
-		CodeErr error  `json:"error"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 
 	UpdateActiveBlogResponse struct {
-		Result *ActiveBlogResult `json:"results"`
+		Result ActiveBlogResult `json:"results"`
 
-		CodeErr error  `json:"code"`
-		MsgErr  string `json:"msg"`
+		Errors []errors.ErrorInfo
 	}
 )
 
 type (
 	ActiveBlogResult struct {
-		Student *ActiveBlogEntity `json:"student"`
+		Blog ActiveBlogEntity `json:"blog"`
 	}
 	ActiveBlogResults struct {
-		Students []*ActiveBlogEntity `json:"students"`
+		Blogs []ActiveBlogEntity `json:"blogs"`
 	}
 
 	// HistoryBlogResult struct {
@@ -45,20 +43,14 @@ type (
 	// 	Students []*HistoryBlogEntity `json:"students"`
 	// }
 
-	LoginBlogResult struct {
-		Status string `json:"status"`
-		Token  string `json:"token"`
-	}
 )
 
 type (
 	ActiveBlogEntity struct {
 		BlogId  int
-		User_id int
+		UserId int
 		Title   string
 		Content string
 		Option  Options
 	}
 )
-
-
