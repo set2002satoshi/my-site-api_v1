@@ -49,6 +49,7 @@ func (uc *UserController) cToModel(req *request.UserCreateRequest) (*models.User
 		req.Name,
 		req.Password,
 		req.Roll,
+		[]models.BlogEntity{},
 		types.INITIAL_REVISION,
 		time.Time{},
 		time.Time{},

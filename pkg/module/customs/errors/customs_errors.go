@@ -52,7 +52,7 @@ var ErrMap = map[string]string{
 	REPO0004: "failed get user",
 	REPO0005: "record could not be deleted",
 	REPO0006: "create blog failed",
-	REPO0007: "created user but user found",
+	REPO0007: "created blog but blog found",
 
 	TYPE0001: "ID is less than or equal to zero",
 

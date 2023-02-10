@@ -65,6 +65,14 @@ type (
 		UserName string `json:"user_name"`
 		Password string `json:"password"`
 		UserRoll string `json:"user_roll"`
+		Blog     []ActiveBlogEntity
+		Option   Options `json:"option"`
+	}
+	ActiveUserEntities struct {
+		UserId   int    `json:"user_id"`
+		UserName string `json:"user_name"`
+		Password string `json:"password"`
+		UserRoll string `json:"user_roll"`
 		Blogs    []ActiveBlogEntity
 		Option   Options `json:"option"`
 	}

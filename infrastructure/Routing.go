@@ -30,26 +30,26 @@ func (r *Routing) setRouting() {
 	userNotLoggedIn := r.Gin.Group("/api")
 	{
 		// user
-		userNotLoggedIn.POST("/login", func(c *gin.Context) { usersController.Login(c) })
+		userNotLoggedIn.POST("/user/get", func(c *gin.Context) { usersController.FindById(c) })
 		userNotLoggedIn.POST("/users", func(c *gin.Context) { usersController.FindAll(c) })
 		userNotLoggedIn.POST("/users/create", func(c *gin.Context) { usersController.Create(c) })
-		
+
+		userNotLoggedIn.POST("/login", func(c *gin.Context) { usersController.Login(c) })
 	}
-	
+
 	userLoggedIn := r.Gin.Group("/api")
 	userLoggedIn.Use(auth.CheckLoggedIn())
 	{
 		// user
-		userLoggedIn.POST("/user/id", func(c *gin.Context) { usersController.FindById(c) })
 		userLoggedIn.POST("/users/update", func(c *gin.Context) { usersController.Update(c) })
 		userLoggedIn.POST("/users/delete", func(c *gin.Context) { usersController.Delete(c) })
 
 	}
 
-	// blogsNotLoggedIn := r.Gin.Group("/api")
-	// {
-	// 	blogsNotLoggedIn.POST("/blog", func(c *gin.Context) { blogsController.FindAll(c)})
-	// }
+	blogNotLoggedIn := r.Gin.Group("/api")
+	{
+		blogNotLoggedIn.POST("/blog/get", func(c *gin.Context) { blogsController.FindById(c) })
+	}
 
 	blogLoggedIn := r.Gin.Group("/api")
 	blogLoggedIn.Use(auth.CheckLoggedIn())

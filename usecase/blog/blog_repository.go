@@ -8,4 +8,5 @@ import (
 
 type BlogRepository interface {
 	Create(db *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error)
+	GetById(db *gorm.DB, id int) (models.BlogEntity, error)
 }

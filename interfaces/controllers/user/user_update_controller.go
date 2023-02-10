@@ -49,6 +49,7 @@ func (uc *UserController) uToModel(req *request.UserUpdateRequest) (*models.User
 		req.Name,
 		req.Password,
 		req.Roll,
+		[]models.BlogEntity{},
 		req.Revision,
 		time.Time{},
 		time.Time{},

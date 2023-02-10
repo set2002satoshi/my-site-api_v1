@@ -10,7 +10,7 @@ type (
 	}
 
 	FindByIDActiveBlogResponse struct {
-		Result ActiveBlogResult `json:"result"`
+		Result ActiveUserWithBlogResult `json:"result"`
 
 		Errors []errors.ErrorInfo
 	}
@@ -32,6 +32,9 @@ type (
 	ActiveBlogResult struct {
 		Blog ActiveBlogEntity `json:"blog"`
 	}
+	ActiveUserWithBlogResult struct {
+		Blog ActiveUserEntities `json:"user_with_blog"`
+	}
 	ActiveBlogResults struct {
 		Blogs []ActiveBlogEntity `json:"blogs"`
 	}
@@ -48,7 +51,7 @@ type (
 type (
 	ActiveBlogEntity struct {
 		BlogId  int
-		UserId int
+		UserId  int
 		Title   string
 		Content string
 		Option  Options

@@ -58,7 +58,6 @@ func (repo *UserRepository) FindByEmail(db *gorm.DB, email string) (*models.User
 	return user, nil
 }
 
-
 func (repo *UserRepository) FetchEmailNumber(db *gorm.DB, email string) (int64, error) {
 	var count int64
 	err := db.Model(&models.UserEntity{}).Where("email = ?", email).Count(&count).Error
