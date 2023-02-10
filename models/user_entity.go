@@ -26,6 +26,7 @@ func NewUserEntity(
 	userName,
 	password string,
 	roll string,
+	blogs []BlogEntity,
 	revision int,
 	createdAt,
 	updatedAt time.Time,
@@ -37,6 +38,7 @@ func NewUserEntity(
 	err = errors.Combine(err, ue.setUserName(userName))
 	err = errors.Combine(err, ue.setPassword(userName))
 	err = errors.Combine(err, ue.setRoll(roll))
+	err = errors.Combine(err, ue.setBlog(blogs))
 	err = errors.Combine(err, ue.setRevision(revision))
 	err = errors.Combine(err, ue.setCreatedAt(createdAt))
 	err = errors.Combine(err, ue.setUpdatedAt(updatedAt))
@@ -64,6 +66,10 @@ func (ue *UserEntity) GetPassword() string {
 
 func (ue *UserEntity) GetRoll() types.AccessROLL {
 	return ue.Roll
+}
+
+func (ue *UserEntity) GetBlogs() []BlogEntity {
+	return ue.Blogs
 }
 
 func (ue *UserEntity) GetRevision() types.REVISION {
@@ -112,6 +118,11 @@ func (ue *UserEntity) setRoll(roll string) error {
 		return errors.Wrap(errors.NewCustomError(), errors.EN0003, err.Error())
 	}
 	ue.Roll = rl
+	return nil
+}
+
+func (ue *UserEntity) setBlog(blog []BlogEntity) error {
+	ue.Blogs = blog
 	return nil
 }
 

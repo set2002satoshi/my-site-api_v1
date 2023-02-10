@@ -52,6 +52,7 @@ func (ui *UserInteractor) Update(ctx c.Context, obj *models.UserEntity) (*models
 		obj.GetUserName(),
 		obj.GetPassword(),
 		string(obj.GetRoll()),
+		[]models.BlogEntity{},
 		int(currentUser.GetRevision()),
 		currentUser.GetCreatedAt(),
 		time.Now(),

@@ -27,7 +27,7 @@ func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) respons
 		UserName: obj.GetUserName(),
 		Password: obj.GetPassword(),
 		UserRoll: string(obj.GetRoll()),
-		Blogs:    []response.ActiveBlogEntity{},
+		Blog:     []response.ActiveBlogEntity{},
 		Option: response.Options{
 			Revision:  int(obj.GetRevision()),
 			CreatedAt: obj.GetCreatedAt(),
@@ -45,7 +45,7 @@ func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []r
 			UserName: obj.GetUserName(),
 			Password: obj.GetPassword(),
 			UserRoll: string(obj.GetRoll()),
-			Blogs:    []response.ActiveBlogEntity{},
+			Blog:     []response.ActiveBlogEntity{},
 			Option: response.Options{
 				Revision:  int(obj.GetRevision()),
 				CreatedAt: obj.GetCreatedAt(),
