@@ -26,6 +26,9 @@ type (
 
 		Errors []errors.ErrorInfo
 	}
+	DeleteActiveBlogResponse struct {
+		Errors []errors.ErrorInfo
+	}
 )
 
 type (

@@ -24,6 +24,13 @@ func (repo *BlogRepository) GetAll(db *gorm.DB) (blog []*models.BlogEntity,err e
 	return
 }
 
+func (repo *BlogRepository) Delete(db *gorm.DB, id int) error {
+	if err := db.Unscoped().Delete(&models.BlogEntity{}, id).Error; err != nil {
+		return errors.Add(errors.NewCustomError(), errors.REPO0005)
+	}
+	return nil
+}
+
 
 func (repo *BlogRepository) Create(db *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error) {
 	if err := db.Create(obj).Error; err != nil {
