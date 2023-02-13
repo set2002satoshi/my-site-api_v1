@@ -51,12 +51,13 @@ func (r *Routing) setRouting() {
 		blogNotLoggedIn.POST("/blog", func(c *gin.Context) { blogsController.Find(c) })
 		blogNotLoggedIn.POST("/blog/get", func(c *gin.Context) { blogsController.FindById(c) })
 	}
-
+	
 	blogLoggedIn := r.Gin.Group("/api")
 	blogLoggedIn.Use(auth.CheckLoggedIn())
 	{
 		// blog
 		blogLoggedIn.POST("/blog/create", func(c *gin.Context) { blogsController.Create(c) })
+		blogLoggedIn.POST("/blog/delete", func(c *gin.Context) { blogsController.Delete(c) })
 	}
 
 }

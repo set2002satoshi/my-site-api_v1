@@ -21,10 +21,8 @@ const (
 
 	TYPE0001 = "TYPE0001"
 
-
 	DB0001 = "DB0001"
 	DB0002 = "DB0002"
-
 
 	EN0001 = "EN0001"
 	EN0002 = "EN0002"
@@ -32,12 +30,10 @@ const (
 	EN0004 = "EN0004"
 	EN0005 = "EN0005"
 
-
 	SE0000 = "SE0000"
 	SE0001 = "SE0001"
 	SE0002 = "SE0002"
 	SE0003 = "SE0003"
-	
 
 	UNDEFINED = "UNDEFINED"
 )
@@ -73,7 +69,6 @@ var ErrMap = map[string]string{
 	SE0001: "couldn't load secret",
 	SE0002: "invalid password",
 	SE0003: "couldn't issue token",
-
 
 	UNDEFINED: "undefined",
 }

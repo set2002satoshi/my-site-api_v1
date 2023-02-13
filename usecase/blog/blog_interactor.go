@@ -52,6 +52,10 @@ func (bi *BlogInteractor) FindAll() ([]*models.BlogEntity, error) {
 	return bi.BlogRepo.GetAll(db)
 }
 
+func (bi *BlogInteractor) Delete(id int) error {
+	db := bi.DB.Connect()
+	return bi.BlogRepo.Delete(db, id)
+}
 
 func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEntity) (*models.UserEntity, error) {
 	BEs := make([]models.BlogEntity, 1)
