@@ -6,5 +6,6 @@ import (
 )
 
 type CategoryRepository interface {
+	GetById(db *gorm.DB, id int) (*models.CategoryEntity, error)
 	Create(db *gorm.DB, obj *models.CategoryEntity) (*models.CategoryEntity, error)
 }
