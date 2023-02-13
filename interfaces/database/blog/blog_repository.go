@@ -16,6 +16,15 @@ func (repo *BlogRepository) GetById(db *gorm.DB, id int) (models.BlogEntity, err
 	return findBlog, nil
 }
 
+func (repo *BlogRepository) GetAll(db *gorm.DB) (blog []*models.BlogEntity,err error) {
+	if err = db.Find(&blog).Error; err != nil {
+		err = errors.Wrap(errors.NewCustomError(), errors.REPO0010, gorm.ErrRecordNotFound.Error())
+		return blog, err
+	}
+	return
+}
+
+
 func (repo *BlogRepository) Create(db *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error) {
 	if err := db.Create(obj).Error; err != nil {
 		return &models.BlogEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0006, gorm.ErrInvalidData.Error())

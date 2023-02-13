@@ -25,11 +25,11 @@ func NewBlogController(db database.DB) *BlogController {
 
 func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) response.ActiveBlogEntity {
 	return response.ActiveBlogEntity{
-		BlogId:  int(obj.GetBlogId()),
-		UserId:  int(obj.GetUserId()),
+		BlogId:   int(obj.GetBlogId()),
+		UserId:   int(obj.GetUserId()),
 		UserName: obj.GetUserName(),
-		Title:   obj.GetTitle(),
-		Content: obj.GetContent(),
+		Title:    obj.GetTitle(),
+		Content:  obj.GetContent(),
 		Option: response.Options{
 			Revision:  int(obj.GetRevision()),
 			CreatedAt: obj.GetCreatedAt(),
@@ -38,15 +38,35 @@ func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) respons
 	}
 }
 
+func (bc *BlogController) convertActiveBlogToDTOs(obj []*models.BlogEntity) []response.ActiveBlogEntity {
+	be := make([]response.ActiveBlogEntity, len(obj))
+	for i, bl := range obj {
+		blogTmp := response.ActiveBlogEntity{
+			BlogId:   int(bl.GetBlogId()),
+			UserId:   int(bl.GetUserId()),
+			UserName: bl.GetUserName(),
+			Title:    bl.GetTitle(),
+			Content:  bl.GetContent(),
+			Option: response.Options{
+				Revision:  int(bl.GetRevision()),
+				CreatedAt: bl.GetCreatedAt(),
+				UpdatedAt: bl.GetUpdatedAt(),
+			},
+		}
+		be[i] = blogTmp
+	}
+	return be
+}
+
 func (bc *BlogController) convertActiveUserWithBlogToDTO(obj *models.UserEntity) response.ActiveUserEntities {
 	be := make([]response.ActiveBlogEntity, len(obj.GetBlogs()))
 	for i, bl := range obj.GetBlogs() {
 		blogTmp := response.ActiveBlogEntity{
-			BlogId:  int(bl.GetBlogId()),
-			UserId:  int(bl.GetUserId()),
+			BlogId:   int(bl.GetBlogId()),
+			UserId:   int(bl.GetUserId()),
 			UserName: bl.GetUserName(),
-			Title:   bl.GetTitle(),
-			Content: bl.GetContent(),
+			Title:    bl.GetTitle(),
+			Content:  bl.GetContent(),
 			Option: response.Options{
 				Revision:  int(bl.GetRevision()),
 				CreatedAt: bl.GetCreatedAt(),

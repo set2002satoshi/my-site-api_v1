@@ -47,6 +47,12 @@ func (bi *BlogInteractor) FindById(id int) (*models.UserEntity, error) {
 	return bi.blogToUser(user, blog)
 }
 
+func (bi *BlogInteractor) FindAll() ([]*models.BlogEntity, error) {
+	db := bi.DB.Connect()
+	return bi.BlogRepo.GetAll(db)
+}
+
+
 func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEntity) (*models.UserEntity, error) {
 	BEs := make([]models.BlogEntity, 1)
 	BEs[0] = blog
