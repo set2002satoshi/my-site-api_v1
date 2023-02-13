@@ -17,6 +17,7 @@ func NewBlogAndCategoryEntity(
 ) (*BlogAndCategoryEntity, error) {
 	BaC := new(BlogAndCategoryEntity)
 	var err error
+	err = errors.Combine(err, BaC.setId(blogId))
 	err = errors.Combine(err, BaC.setBlogId(blogId))
 	err = errors.Combine(err, BaC.setCategoryId(categoryId))
 	if err != nil {
