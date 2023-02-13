@@ -10,6 +10,8 @@ import (
 type BlogEntity struct {
 	BlogId    types.IDENTIFICATION `gorm:"primaryKey"`
 	UserId    types.IDENTIFICATION
+	UserName string `gorm:"not null"`
+	// UserICON string `gorm:"not null"`
 	Title     string `gorm:"not null;max:26"`
 	Content   string `gorm:"not null;max:100"`
 	Revision  types.REVISION
@@ -20,6 +22,7 @@ type BlogEntity struct {
 func NewBlogEntity(
 	blogId int,
 	userId int,
+	userName string,
 	title string,
 	content string,
 	revision int,
@@ -30,6 +33,7 @@ func NewBlogEntity(
 	var err error
 	err = errors.Combine(err, be.setBlogId(blogId))
 	err = errors.Combine(err, be.setUserId(userId))
+	err = errors.Combine(err, be.setUserName(userName))
 	err = errors.Combine(err, be.setTitle(title))
 	err = errors.Combine(err, be.setContent(content))
 	err = errors.Combine(err, be.setRevision(revision))
@@ -47,6 +51,10 @@ func (be *BlogEntity) GetBlogId() types.IDENTIFICATION {
 
 func (be *BlogEntity) GetUserId() types.IDENTIFICATION {
 	return be.UserId
+}
+
+func (be *BlogEntity) GetUserName() string {
+	return be.UserName
 }
 
 func (be *BlogEntity) GetTitle() string {
@@ -85,6 +93,11 @@ func (be *BlogEntity) setUserId(id int) error {
 		return err
 	}
 	be.UserId = i
+	return nil
+}
+
+func (be *BlogEntity) setUserName(name string) error {
+	be.UserName = name
 	return nil
 }
 

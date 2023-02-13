@@ -22,7 +22,7 @@ type (
 	}
 
 	UpdateActiveUserResponse struct {
-		Result ActiveUserResult `json:"results"`
+		Result ActiveUserWithBlogResults `json:"results"`
 
 		Errors []errors.ErrorInfo
 	}
@@ -46,6 +46,10 @@ type (
 		Users []ActiveUserEntity `json:"users"`
 	}
 
+	ActiveUserWithBlogResults struct {
+		User ActiveUserEntities
+	}
+
 	// HistoreUserResult struct {
 	// 	Student *HistoryUserEntity `json:"student"`
 	// }
@@ -62,6 +66,7 @@ type (
 type (
 	ActiveUserEntity struct {
 		UserId   int    `json:"user_id"`
+		Email    string `json:"email"`
 		UserName string `json:"user_name"`
 		Password string `json:"password"`
 		UserRoll string `json:"user_roll"`
@@ -70,6 +75,7 @@ type (
 	}
 	ActiveUserEntities struct {
 		UserId   int    `json:"user_id"`
+		Email    string `json:"email"`
 		UserName string `json:"user_name"`
 		Password string `json:"password"`
 		UserRoll string `json:"user_roll"`

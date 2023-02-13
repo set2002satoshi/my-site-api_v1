@@ -14,7 +14,24 @@ type BlogInteractor struct {
 
 func (bi *BlogInteractor) Register(obj *models.BlogEntity) (*models.BlogEntity, error) {
 	db := bi.DB.Connect()
-	return bi.BlogRepo.Create(db, obj)
+	userInfo, err := bi.UserRepo.GetById(db, int(obj.GetUserId()))
+	if err != nil {
+		return nil, err
+	}
+	applyBlog, err := models.NewBlogEntity(
+		int(obj.GetBlogId()),
+		int(obj.GetUserId()),
+		userInfo.GetUserName(),
+		obj.GetTitle(),
+		obj.GetContent(),
+		int(obj.GetRevision()),
+		obj.GetCreatedAt(),
+		obj.GetUpdatedAt(),
+	)
+	if err != nil {
+		return nil, err
+	}
+	return bi.BlogRepo.Create(db, applyBlog)
 }
 
 func (bi *BlogInteractor) FindById(id int) (*models.UserEntity, error) {
@@ -38,7 +55,7 @@ func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEn
 		int(user.GetUserId()),
 		user.GetEmail(),
 		user.GetUserName(),
-		user.GetPassword(),
+		string(user.GetPassword()),
 		string(user.GetRoll()),
 		BEs,
 		int(user.GetRevision()),

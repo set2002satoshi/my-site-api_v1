@@ -38,7 +38,7 @@ func (uc *UserController) Update(ctx c.Context) {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
 		return
 	}
-	res.Result = response.ActiveUserResult{User: uc.convertActiveUserToDTO(updatedUser)}
+	res.Result = response.ActiveUserWithBlogResults{User: uc.convertActiveUserWithBlogToDTO(updatedUser)}
 	ctx.JSON(http.StatusOK, res)
 }
 

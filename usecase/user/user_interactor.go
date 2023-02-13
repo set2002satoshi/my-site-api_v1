@@ -87,6 +87,7 @@ func (ui *UserInteractor) FetchToken(obj *dtoAuth.UserLoginModel) (string, error
 	if auth.ComparisonPassAndHash(findUser.GetPassword(), obj.Password) {
 		return "", errors.Add(errors.NewCustomError(), errors.SE0002)
 	}
+
 	result, err := auth.IssueToken(int(findUser.GetUserId()))
 	if err != nil {
 		return "", errors.Wrap(errors.NewCustomError(), errors.SE0003, err.Error())

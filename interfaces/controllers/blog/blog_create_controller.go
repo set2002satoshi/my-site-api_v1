@@ -53,6 +53,7 @@ func (bc *BlogController) cToModel(ctx c.Context, req *request.BlogCreateRequest
 	return models.NewBlogEntity(
 		types.INITIAL_ID,
 		userId,
+		types.DEFAULT_NAME,
 		req.Title,
 		req.Context,
 		types.INITIAL_REVISION,

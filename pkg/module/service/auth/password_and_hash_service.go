@@ -6,7 +6,8 @@ import (
 
 func ComparisonPassAndHash(cp, p string) bool {
 	if err := bcrypt.CompareHashAndPassword([]byte(cp), []byte(p)); err != nil {
-		return false
+		return true
 	}
-	return true
+	return false
 }
+

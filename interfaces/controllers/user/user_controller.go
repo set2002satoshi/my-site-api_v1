@@ -25,6 +25,7 @@ func (uc *UserController) convertActiveUserToDTO(obj *models.UserEntity) respons
 	return response.ActiveUserEntity{
 		UserId:   int(obj.GetUserId()),
 		UserName: obj.GetUserName(),
+		Email:    obj.GetEmail(),
 		Password: obj.GetPassword(),
 		UserRoll: string(obj.GetRoll()),
 		Blog:     []response.ActiveBlogEntity{},
@@ -43,6 +44,7 @@ func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []r
 		result := response.ActiveUserEntity{
 			UserId:   int(obj.GetUserId()),
 			UserName: obj.GetUserName(),
+			Email:    obj.GetEmail(),
 			Password: obj.GetPassword(),
 			UserRoll: string(obj.GetRoll()),
 			Blog:     []response.ActiveBlogEntity{},
@@ -55,4 +57,36 @@ func (uc *UserController) convertActiveUserToDTOs(objs []*models.UserEntity) []r
 		UEs[i] = result
 	}
 	return UEs
+}
+
+func (bc *UserController) convertActiveUserWithBlogToDTO(obj *models.UserEntity) response.ActiveUserEntities {
+	be := make([]response.ActiveBlogEntity, len(obj.GetBlogs()))
+	for i, bl := range obj.GetBlogs() {
+		blogTmp := response.ActiveBlogEntity{
+			BlogId:   int(bl.GetBlogId()),
+			UserId:   int(bl.GetUserId()),
+			UserName: bl.GetUserName(),
+			Title:    bl.GetTitle(),
+			Content:  bl.GetContent(),
+			Option: response.Options{
+				Revision:  int(bl.GetRevision()),
+				CreatedAt: bl.GetCreatedAt(),
+				UpdatedAt: bl.GetUpdatedAt(),
+			},
+		}
+		be[i] = blogTmp
+	}
+	return response.ActiveUserEntities{
+		UserId:   int(obj.GetUserId()),
+		UserName: obj.GetUserName(),
+		Email:    obj.GetEmail(),
+		Password: obj.GetPassword(),
+		UserRoll: string(obj.GetRoll()),
+		Blogs:    be,
+		Option: response.Options{
+			Revision:  int(obj.GetRevision()),
+			CreatedAt: obj.GetCreatedAt(),
+			UpdatedAt: obj.GetUpdatedAt(),
+		},
+	}
 }

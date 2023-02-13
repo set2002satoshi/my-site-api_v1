@@ -29,7 +29,7 @@ func (bc *BlogController) FindById(ctx c.Context) {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
 		return
 	}
-	res.Result = response.ActiveUserWithBlogResult{Blog: bc.convertActiveUserWithBlogToDTOs(foundUserWithBlog)}
+	res.Result = response.ActiveUserWithBlogResult{Blog: bc.convertActiveUserWithBlogToDTO(foundUserWithBlog)}
 	ctx.JSON(http.StatusOK, res)
 }
 
