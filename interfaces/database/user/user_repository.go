@@ -11,7 +11,7 @@ type UserRepository struct{}
 func (repo *UserRepository) GetById(db *gorm.DB, id int) (*models.UserEntity, error) {
 	var findUser *models.UserEntity
 	if err := db.Where("user_id = ?", id).First(&findUser).Error; err != nil {
-		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0001, gorm.ErrRecordNotFound.Error())
+		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0004, gorm.ErrRecordNotFound.Error())
 	}
 	return findUser, nil
 }

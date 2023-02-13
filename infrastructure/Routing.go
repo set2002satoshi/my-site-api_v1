@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"github.com/gin-gonic/gin"
 	bc "github.com/set2002satoshi/my-site-api/interfaces/controllers/blog"
-	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
 	cc "github.com/set2002satoshi/my-site-api/interfaces/controllers/category"
+	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
 	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 )
 
@@ -53,7 +53,7 @@ func (r *Routing) setRouting() {
 		blogNotLoggedIn.POST("/blog", func(c *gin.Context) { blogsController.Find(c) })
 		blogNotLoggedIn.POST("/blog/get", func(c *gin.Context) { blogsController.FindById(c) })
 	}
-	
+
 	blogLoggedIn := r.Gin.Group("/api")
 	blogLoggedIn.Use(auth.CheckLoggedIn())
 	{
@@ -65,9 +65,9 @@ func (r *Routing) setRouting() {
 
 	categoryNotLoggedIn := r.Gin.Group("/api")
 	{
+		categoryNotLoggedIn.POST("/category/get", func(c *gin.Context) { categoryController.FindById(c) })
 		categoryNotLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
 	}
-
 
 }
 
