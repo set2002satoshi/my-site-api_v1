@@ -8,16 +8,14 @@ type (
 		ID int `json:"id"`
 	}
 	BlogCreateRequest struct {
-		Title string `json:"title"`
+		Title   string `json:"title"`
 		Context string `json:"context"`
 	}
 
 	BlogUpdateRequest struct {
 		ID       int    `json:"id"`
-		Email    string `json:"email"`
-		Name     string `json:"name"`
-		Password string `json:"password"`
-		Roll     string `json:"roll"`
+		Title    string `json:"title"`
+		Context  string `json:"context"`
 		Revision int    `json:"revision"`
 	}
 )

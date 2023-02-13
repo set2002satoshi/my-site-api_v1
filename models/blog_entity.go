@@ -116,6 +116,17 @@ func (be *BlogEntity) setRevision(revision int) error {
 	return nil
 }
 
+func (be *BlogEntity) CountUpRevision(currentNum types.REVISION) error {
+	if be.Revision != currentNum {
+		return errors.Add(errors.NewCustomError(), errors.EN0004)
+	}
+	if err := be.setRevision(int(currentNum) + 1); err != nil {
+		return errors.Wrap(errors.NewCustomError(), errors.EN0005, err.Error())
+	}
+	return nil
+}
+
+
 func (be *BlogEntity) setCreatedAt(createdAt time.Time) error {
 	be.CreatedAt = createdAt
 	return nil

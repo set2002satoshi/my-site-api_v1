@@ -1,6 +1,8 @@
 package blog
 
 import (
+	"time"
+
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/usecase"
 	"github.com/set2002satoshi/my-site-api/usecase/user"
@@ -55,6 +57,43 @@ func (bi *BlogInteractor) FindAll() ([]*models.BlogEntity, error) {
 func (bi *BlogInteractor) Delete(id int) error {
 	db := bi.DB.Connect()
 	return bi.BlogRepo.Delete(db, id)
+}
+
+func (bi *BlogInteractor) Update(obj *models.BlogEntity) (*models.BlogEntity, error) {
+	tx := bi.DB.Begin()
+	currentBlog, err := bi.BlogRepo.GetById(tx, int(obj.GetBlogId()))
+	if err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+	if err := currentBlog.CountUpRevision(obj.GetRevision()); err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+	joinObj, err := models.NewBlogEntity(
+		int(currentBlog.GetBlogId()),
+		int(currentBlog.GetUserId()),
+		currentBlog.GetUserName(),
+		obj.GetTitle(),
+		obj.GetContent(),
+		int(currentBlog.GetRevision()),
+		currentBlog.GetCreatedAt(),
+		time.Now(),
+	)
+	if err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+	updatedObj, err := bi.BlogRepo.Update(tx, joinObj)
+	if err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+	return updatedObj, nil
 }
 
 func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEntity) (*models.UserEntity, error) {

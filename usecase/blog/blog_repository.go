@@ -11,4 +11,5 @@ type BlogRepository interface {
 	GetById(db *gorm.DB, id int) (models.BlogEntity, error)
 	GetAll(db *gorm.DB) ([]*models.BlogEntity, error)
 	Delete(db *gorm.DB, id int) error
+	Update(db *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error)
 }
