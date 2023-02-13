@@ -48,6 +48,7 @@ func (r *Routing) setRouting() {
 
 	blogNotLoggedIn := r.Gin.Group("/api")
 	{
+		blogNotLoggedIn.POST("/blog", func(c *gin.Context) { blogsController.Find(c) })
 		blogNotLoggedIn.POST("/blog/get", func(c *gin.Context) { blogsController.FindById(c) })
 	}
 

@@ -17,7 +17,7 @@ const (
 	REPO0007 = "REPO0007"
 	REPO0008 = "REPO0008"
 	REPO0009 = "REPO0009"
-
+	REPO0010 = "REPO0010"
 
 	TYPE0001 = "TYPE0001"
 
@@ -57,6 +57,7 @@ var ErrMap = map[string]string{
 	REPO0007: "created blog but blog found",
 	REPO0008: "couldn't update user",
 	REPO0009: "couldn't update user on blog",
+	REPO0010: "failed get blogs",
 
 	TYPE0001: "id is less than or equal to zero",
 
