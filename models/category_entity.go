@@ -6,11 +6,12 @@ import (
 )
 
 type CategoryEntity struct {
-	CategoryID   types.IDENTIFICATION `gorm:"primaryKey"`
-	CategoryName string               `gorm:"unique;not null;max:18"`
+	CategoryID   types.IDENTIFICATION    `gorm:"primaryKey"`
+	CategoryName string                  `gorm:"unique;not null;max:18"`
+	Blogs        []BlogAndCategoryEntity `gorm:"foreignKey:BlogId"`
 }
 
-func New(
+func NewCategoryEntity(
 	categoryId int,
 	categoryName string,
 ) (*CategoryEntity, error) {

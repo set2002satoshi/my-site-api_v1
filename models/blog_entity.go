@@ -8,15 +8,16 @@ import (
 )
 
 type BlogEntity struct {
-	BlogId    types.IDENTIFICATION `gorm:"primaryKey"`
-	UserId    types.IDENTIFICATION
+	BlogId   types.IDENTIFICATION `gorm:"primaryKey"`
+	UserId   types.IDENTIFICATION
 	UserName string `gorm:"not null"`
 	// UserICON string `gorm:"not null"`
-	Title     string `gorm:"not null;max:26"`
-	Content   string `gorm:"not null;max:100"`
-	Revision  types.REVISION
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Title      string                  `gorm:"not null;max:26"`
+	Content    string                  `gorm:"not null;max:100"`
+	Categories []BlogAndCategoryEntity `gorm:"foreignKey:CategoryId"`
+	Revision   types.REVISION
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 func NewBlogEntity(
@@ -68,7 +69,6 @@ func (be *BlogEntity) GetContent() string {
 func (be *BlogEntity) GetRevision() types.REVISION {
 	return be.Revision
 }
-
 
 func (be *BlogEntity) GetCreatedAt() time.Time {
 	return be.CreatedAt
@@ -125,7 +125,6 @@ func (be *BlogEntity) CountUpRevision(currentNum types.REVISION) error {
 	}
 	return nil
 }
-
 
 func (be *BlogEntity) setCreatedAt(createdAt time.Time) error {
 	be.CreatedAt = createdAt
