@@ -57,6 +57,7 @@ func (r *Routing) setRouting() {
 	{
 		// blog
 		blogLoggedIn.POST("/blog/create", func(c *gin.Context) { blogsController.Create(c) })
+		blogLoggedIn.POST("/blog/update", func(c *gin.Context) { blogsController.Update(c) })
 		blogLoggedIn.POST("/blog/delete", func(c *gin.Context) { blogsController.Delete(c) })
 	}
 

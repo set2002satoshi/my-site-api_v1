@@ -40,7 +40,7 @@ func (ui *UserInteractor) Update(ctx c.Context, obj *models.UserEntity) (*models
 	currentUser, err := ui.UserRepo.GetById(tx, int(obj.GetUserId()))
 	if err != nil {
 		tx.Rollback()
-		return &models.UserEntity{}, errors.Add(errors.NewCustomError(), errors.REPO0003)
+		return &models.UserEntity{}, err
 	}
 	if err := currentUser.CountUpRevision(obj.GetRevision()); err != nil {
 		tx.Rollback()

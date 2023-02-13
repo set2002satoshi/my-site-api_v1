@@ -31,6 +31,13 @@ func (repo *BlogRepository) Delete(db *gorm.DB, id int) error {
 	return nil
 }
 
+func (repo *BlogRepository) Update(tx *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error) {
+	if err := tx.Select("title", "content", "revision", "updatedAt").Updates(&obj).Error; err != nil {
+		return &models.BlogEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0008, err.Error())
+	}
+	return obj, nil
+}
+
 
 func (repo *BlogRepository) Create(db *gorm.DB, obj *models.BlogEntity) (*models.BlogEntity, error) {
 	if err := db.Create(obj).Error; err != nil {
