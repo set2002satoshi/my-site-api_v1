@@ -2,12 +2,12 @@ package request
 
 type (
 	CategoryFindByIdRequest struct {
-		ID int
+		ID int `json:"id"`
 	}
 	CategoryDeleteRequest struct {
-		ID int
+		ID int `json:"id"`
 	}
 	CategoryCreateRequest struct {
-		CategoryName string
+		CategoryName string `json:"category_name"`
 	}
 )

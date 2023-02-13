@@ -23,10 +23,10 @@ type (
 
 type (
 	ActiveCategoryResult struct {
-		Blog ActiveBlogEntity `json:"blog"`
+		Category ActiveCategoryEntity `json:"category"`
 	}
 	ActiveCategoryResults struct {
-		Blogs []ActiveBlogEntity `json:"blogs"`
+		Categories []ActiveCategoryEntity `json:"categories"`
 	}
 )
 
