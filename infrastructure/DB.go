@@ -57,6 +57,7 @@ func (db *DB) DBInit() {
 	var err error
 	err = errors.Combine(err, DBEngine.AutoMigrate(&models.UserEntity{}))
 	err = errors.Combine(err, DBEngine.AutoMigrate(&models.BlogEntity{}))
+	err = errors.Combine(err, DBEngine.AutoMigrate(&models.BlogAndCategoryEntity{}))
 	err = errors.Combine(err, DBEngine.AutoMigrate(&models.CategoryEntity{}))
 	if err != nil {
 		panic(errors.DB0002)
