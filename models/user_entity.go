@@ -36,7 +36,7 @@ func NewUserEntity(
 	err = errors.Combine(err, ue.setUserId(userId))
 	err = errors.Combine(err, ue.setEmail(Email))
 	err = errors.Combine(err, ue.setUserName(userName))
-	err = errors.Combine(err, ue.setPassword(userName))
+	err = errors.Combine(err, ue.setPassword(password))
 	err = errors.Combine(err, ue.setRoll(roll))
 	err = errors.Combine(err, ue.setBlog(blogs))
 	err = errors.Combine(err, ue.setRevision(revision))

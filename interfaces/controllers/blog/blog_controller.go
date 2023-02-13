@@ -27,6 +27,7 @@ func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) respons
 	return response.ActiveBlogEntity{
 		BlogId:  int(obj.GetBlogId()),
 		UserId:  int(obj.GetUserId()),
+		UserName: obj.GetUserName(),
 		Title:   obj.GetTitle(),
 		Content: obj.GetContent(),
 		Option: response.Options{
@@ -37,12 +38,13 @@ func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) respons
 	}
 }
 
-func (bc *BlogController) convertActiveUserWithBlogToDTOs(obj *models.UserEntity) response.ActiveUserEntities {
+func (bc *BlogController) convertActiveUserWithBlogToDTO(obj *models.UserEntity) response.ActiveUserEntities {
 	be := make([]response.ActiveBlogEntity, len(obj.GetBlogs()))
 	for i, bl := range obj.GetBlogs() {
 		blogTmp := response.ActiveBlogEntity{
 			BlogId:  int(bl.GetBlogId()),
 			UserId:  int(bl.GetUserId()),
+			UserName: bl.GetUserName(),
 			Title:   bl.GetTitle(),
 			Content: bl.GetContent(),
 			Option: response.Options{

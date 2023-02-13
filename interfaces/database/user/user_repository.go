@@ -38,9 +38,20 @@ func (repo *UserRepository) Create(db *gorm.DB, obj *models.UserEntity) (*models
 
 func (repo *UserRepository) Update(tx *gorm.DB, obj *models.UserEntity) (*models.UserEntity, error) {
 	if err := tx.Select("email", "user_name", "password", "roll", "revision").Updates(&obj).Error; err != nil {
+		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0008, err.Error())
+	}
+
+	// ここから下は別の関数として定義するかも
+	var findUser *models.UserEntity
+	if err := tx.Where("user_id = ?", int(obj.GetUserId())).Preload("Blogs").First(&findUser).Error; err != nil {
+		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0004, gorm.ErrRecordNotFound.Error())
+	}
+
+	if err := tx.Model(findUser.GetBlogs()).Update("user_name", findUser.GetUserName()).Error; err != nil {
 		return &models.UserEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0003, err.Error())
 	}
-	return obj, nil
+
+	return findUser, nil
 }
 
 func (repo *UserRepository) Delete(db *gorm.DB, id int) error {

@@ -15,6 +15,8 @@ const (
 	REPO0005 = "REPO0005"
 	REPO0006 = "REPO0006"
 	REPO0007 = "REPO0007"
+	REPO0008 = "REPO0008"
+	REPO0009 = "REPO0009"
 
 
 	TYPE0001 = "TYPE0001"
@@ -53,8 +55,10 @@ var ErrMap = map[string]string{
 	REPO0005: "record could not be deleted",
 	REPO0006: "create blog failed",
 	REPO0007: "created blog but blog found",
+	REPO0008: "couldn't update user",
+	REPO0009: "couldn't update user on blog",
 
-	TYPE0001: "ID is less than or equal to zero",
+	TYPE0001: "id is less than or equal to zero",
 
 	DB0001: "failure db connect",
 	DB0002: "failure migration",

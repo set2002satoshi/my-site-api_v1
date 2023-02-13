@@ -52,6 +52,7 @@ type (
 	ActiveBlogEntity struct {
 		BlogId  int
 		UserId  int
+		UserName string
 		Title   string
 		Content string
 		Option  Options
