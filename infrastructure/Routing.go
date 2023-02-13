@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	bc "github.com/set2002satoshi/my-site-api/interfaces/controllers/blog"
 	uc "github.com/set2002satoshi/my-site-api/interfaces/controllers/user"
+	cc "github.com/set2002satoshi/my-site-api/interfaces/controllers/category"
 	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 )
 
@@ -26,6 +27,7 @@ func NewRouting(db *DB) *Routing {
 func (r *Routing) setRouting() {
 	usersController := uc.NewUserController(r.DB)
 	blogsController := bc.NewBlogController(r.DB)
+	categoryController := cc.NewCategoryController(r.DB)
 
 	userNotLoggedIn := r.Gin.Group("/api")
 	{
@@ -60,6 +62,12 @@ func (r *Routing) setRouting() {
 		blogLoggedIn.POST("/blog/update", func(c *gin.Context) { blogsController.Update(c) })
 		blogLoggedIn.POST("/blog/delete", func(c *gin.Context) { blogsController.Delete(c) })
 	}
+
+	categoryNotLoggedIn := r.Gin.Group("/api")
+	{
+		categoryNotLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
+	}
+
 
 }
 

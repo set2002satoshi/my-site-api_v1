@@ -1,0 +1,29 @@
+package category
+
+import (
+	"github.com/set2002satoshi/my-site-api/interfaces/database"
+	DBCategory "github.com/set2002satoshi/my-site-api/interfaces/database/Category"
+	"github.com/set2002satoshi/my-site-api/models"
+	"github.com/set2002satoshi/my-site-api/pkg/module/dto/response"
+	usecase "github.com/set2002satoshi/my-site-api/usecase/category"
+)
+
+type CategoryController struct {
+	Interactor usecase.CategoryInteractor
+}
+
+func NewCategoryController(db database.DB) *CategoryController {
+	return &CategoryController{
+		Interactor: usecase.CategoryInteractor{
+			DB:           &database.DBRepository{DB: db},
+			CategoryRepo: &DBCategory.CategoryRepository{},
+		},
+	}
+}
+
+func (bc *CategoryController) convertActiveCategoryToDTO(obj *models.CategoryEntity) response.ActiveCategoryEntity {
+	return response.ActiveCategoryEntity{
+		Id:           int(obj.GetCategoryID()),
+		CategoryName: obj.GetCategoryName(),
+	}
+}
