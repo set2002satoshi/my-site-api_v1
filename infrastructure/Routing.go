@@ -65,6 +65,7 @@ func (r *Routing) setRouting() {
 
 	categoryNotLoggedIn := r.Gin.Group("/api")
 	{
+		categoryNotLoggedIn.POST("/category", func(c *gin.Context) { categoryController.Find(c) })
 		categoryNotLoggedIn.POST("/category/get", func(c *gin.Context) { categoryController.FindById(c) })
 		categoryNotLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
 	}
