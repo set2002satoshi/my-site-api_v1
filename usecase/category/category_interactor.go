@@ -15,6 +15,11 @@ func (ci *CategoryInteractor) FindById(id int) (*models.CategoryEntity, error) {
 	return ci.CategoryRepo.GetById(db, id)
 }
 
+func (ci *CategoryInteractor) FindAll() ([]*models.CategoryEntity, error) {
+	db := ci.DB.Connect()
+	return ci.CategoryRepo.GetAll(db)
+}
+
 func (ci *CategoryInteractor) Register(obj *models.CategoryEntity) (*models.CategoryEntity, error) {
 	db := ci.DB.Connect()
 	return ci.CategoryRepo.Create(db, obj)

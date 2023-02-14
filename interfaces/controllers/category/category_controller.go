@@ -2,7 +2,7 @@ package category
 
 import (
 	"github.com/set2002satoshi/my-site-api/interfaces/database"
-	DBCategory "github.com/set2002satoshi/my-site-api/interfaces/database/Category"
+	DBCategory "github.com/set2002satoshi/my-site-api/interfaces/database/category"
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/pkg/module/dto/response"
 	usecase "github.com/set2002satoshi/my-site-api/usecase/category"
@@ -26,4 +26,17 @@ func (bc *CategoryController) convertActiveCategoryToDTO(obj *models.CategoryEnt
 		Id:           int(obj.GetCategoryID()),
 		CategoryName: obj.GetCategoryName(),
 	}
+}
+
+func (bc *CategoryController) convertActiveCategoryToDTOs(obj []*models.CategoryEntity) []response.ActiveCategoryEntity {
+	CEL := make([]response.ActiveCategoryEntity, len(obj))
+	for i, c := range obj {
+		category := response.ActiveCategoryEntity{
+			Id:           int(c.GetCategoryID()),
+			CategoryName: c.GetCategoryName(),
+		}
+		CEL[i] = category
+	}
+	return CEL
+
 }
