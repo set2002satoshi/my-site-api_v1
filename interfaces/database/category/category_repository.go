@@ -29,3 +29,10 @@ func (repo *CategoryRepository) Create(db *gorm.DB, obj *models.CategoryEntity) 
 	}
 	return obj, nil
 }
+
+func (repo *CategoryRepository) DeleteById(db *gorm.DB, id int) error {
+	if err := db.Unscoped().Delete(&models.CategoryEntity{}, id).Error; err != nil {
+		return errors.Add(errors.NewCustomError(), errors.REPO0005)
+	}
+	return nil
+}
