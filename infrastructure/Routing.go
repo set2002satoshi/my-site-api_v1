@@ -63,12 +63,13 @@ func (r *Routing) setRouting() {
 		blogLoggedIn.POST("/blog/delete", func(c *gin.Context) { blogsController.Delete(c) })
 	}
 
-	categoryNotLoggedIn := r.Gin.Group("/api")
+	categoryLoggedIn := r.Gin.Group("/api")
+	categoryLoggedIn.Use(auth.CheckLoggedIn())
 	{
-		categoryNotLoggedIn.POST("/category", func(c *gin.Context) { categoryController.Find(c) })
-		categoryNotLoggedIn.POST("/category/get", func(c *gin.Context) { categoryController.FindById(c) })
-		categoryNotLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
-		categoryNotLoggedIn.POST("/category/delete", func(c *gin.Context) { categoryController.Delete(c) })
+		categoryLoggedIn.POST("/category", func(c *gin.Context) { categoryController.Find(c) })
+		categoryLoggedIn.POST("/category/get", func(c *gin.Context) { categoryController.FindById(c) })
+		categoryLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
+		categoryLoggedIn.POST("/category/delete", func(c *gin.Context) { categoryController.Delete(c) })
 	}
 
 }
