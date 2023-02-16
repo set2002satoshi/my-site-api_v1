@@ -68,6 +68,7 @@ func (r *Routing) setRouting() {
 		categoryNotLoggedIn.POST("/category", func(c *gin.Context) { categoryController.Find(c) })
 		categoryNotLoggedIn.POST("/category/get", func(c *gin.Context) { categoryController.FindById(c) })
 		categoryNotLoggedIn.POST("/category/create", func(c *gin.Context) { categoryController.Create(c) })
+		categoryNotLoggedIn.POST("/category/delete", func(c *gin.Context) { categoryController.Delete(c) })
 	}
 
 }

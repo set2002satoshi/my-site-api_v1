@@ -4,7 +4,7 @@ type (
 	CategoryFindByIdRequest struct {
 		ID int `json:"id"`
 	}
-	CategoryDeleteRequest struct {
+	CategoryDeleteByIdRequest struct {
 		ID int `json:"id"`
 	}
 	CategoryCreateRequest struct {

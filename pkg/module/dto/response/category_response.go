@@ -16,7 +16,7 @@ type (
 		Errors []errors.ErrorInfo
 	}
 
-	DeleteCategoryResponse struct {
+	DeleteByIdCategoryResponse struct {
 		Errors []errors.ErrorInfo
 	}
 )
