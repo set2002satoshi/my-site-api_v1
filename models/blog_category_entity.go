@@ -12,12 +12,13 @@ type BlogAndCategoryEntity struct {
 }
 
 func NewBlogAndCategoryEntity(
+	id,
 	blogId,
 	categoryId int,
 ) (*BlogAndCategoryEntity, error) {
 	BaC := new(BlogAndCategoryEntity)
 	var err error
-	err = errors.Combine(err, BaC.setId(blogId))
+	err = errors.Combine(err, BaC.setId(id))
 	err = errors.Combine(err, BaC.setBlogId(blogId))
 	err = errors.Combine(err, BaC.setCategoryId(categoryId))
 	if err != nil {

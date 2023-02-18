@@ -2,21 +2,21 @@ package category
 
 import (
 	"github.com/set2002satoshi/my-site-api/interfaces/database"
-	DBCategory "github.com/set2002satoshi/my-site-api/interfaces/database/category"
+	"github.com/set2002satoshi/my-site-api/interfaces/database/config"
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/pkg/module/dto/response"
-	usecase "github.com/set2002satoshi/my-site-api/usecase/category"
+	"github.com/set2002satoshi/my-site-api/usecase/service"
 )
 
 type CategoryController struct {
-	Interactor usecase.CategoryInteractor
+	Interactor service.CategoryInteractor
 }
 
-func NewCategoryController(db database.DB) *CategoryController {
+func NewCategoryController(db config.DB) *CategoryController {
 	return &CategoryController{
-		Interactor: usecase.CategoryInteractor{
-			DB:           &database.DBRepository{DB: db},
-			CategoryRepo: &DBCategory.CategoryRepository{},
+		Interactor: service.CategoryInteractor{
+			DB:           &config.DBRepository{DB: db},
+			CategoryRepo: &database.CategoryRepository{},
 		},
 	}
 }

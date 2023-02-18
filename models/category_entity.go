@@ -8,7 +8,7 @@ import (
 type CategoryEntity struct {
 	CategoryID   types.IDENTIFICATION    `gorm:"primaryKey"`
 	CategoryName string                  `gorm:"unique;not null;max:18"`
-	Blogs        []BlogAndCategoryEntity `gorm:"foreignKey:BlogId"`
+	Blogs        []BlogAndCategoryEntity `gorm:"foreignKey:CategoryId"`
 }
 
 func NewCategoryEntity(

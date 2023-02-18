@@ -1,4 +1,4 @@
-package blog
+package database
 
 import (
 	"github.com/set2002satoshi/my-site-api/models"
@@ -17,7 +17,7 @@ func (repo *BlogRepository) GetById(db *gorm.DB, id int) (models.BlogEntity, err
 }
 
 func (repo *BlogRepository) GetAll(db *gorm.DB) (blog []*models.BlogEntity, err error) {
-	if err = db.Find(&blog).Error; err != nil {
+	if err = db.Preload("Categories").Find(&blog).Error; err != nil {
 		err = errors.Wrap(errors.NewCustomError(), errors.REPO0010, gorm.ErrRecordNotFound.Error())
 		return blog, err
 	}

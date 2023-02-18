@@ -1,4 +1,4 @@
-package user
+package service
 
 import (
 	"time"
@@ -9,12 +9,14 @@ import (
 	dtoAuth "github.com/set2002satoshi/my-site-api/pkg/module/dto/auth"
 	"github.com/set2002satoshi/my-site-api/pkg/module/service/auth"
 	"github.com/set2002satoshi/my-site-api/usecase"
+	repo "github.com/set2002satoshi/my-site-api/usecase/repository"
+
 	"gorm.io/gorm"
 )
 
 type UserInteractor struct {
 	DB       usecase.DBRepository
-	UserRepo UserRepository
+	UserRepo repo.UserRepository
 }
 
 func (ui *UserInteractor) FindAll() ([]*models.UserEntity, error) {

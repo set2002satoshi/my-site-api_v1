@@ -50,12 +50,26 @@ func (bc *BlogController) uToModel(ctx c.Context, req *request.BlogUpdateRequest
 	}
 	userId, _ := strconv.Atoi(userSId.(string))
 
+	categories := make([]models.BlogAndCategoryEntity, len(req.Categories))
+	for i, c := range req.Categories {
+		category, err := models.NewBlogAndCategoryEntity(
+			types.INITIAL_ID,
+			c.ID,
+			userId,
+		)
+		if err != nil {
+			return &models.BlogEntity{}, err
+		}
+		categories[i] = *category
+	}
+
 	return models.NewBlogEntity(
 		req.ID,
 		userId,
 		types.DEFAULT_NAME,
 		req.Title,
 		req.Context,
+		categories,
 		req.Revision,
 		time.Time{},
 		time.Time{},

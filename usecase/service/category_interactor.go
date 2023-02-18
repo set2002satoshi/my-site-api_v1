@@ -1,13 +1,14 @@
-package category
+package service
 
 import (
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/usecase"
+	repo "github.com/set2002satoshi/my-site-api/usecase/repository"
 )
 
 type CategoryInteractor struct {
 	DB           usecase.DBRepository
-	CategoryRepo CategoryRepository
+	CategoryRepo repo.CategoryRepository
 }
 
 func (ci *CategoryInteractor) FindById(id int) (*models.CategoryEntity, error) {
