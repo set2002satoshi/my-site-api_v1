@@ -55,7 +55,7 @@ func (bc *BlogController) uToModel(ctx c.Context, req *request.BlogUpdateRequest
 		category, err := models.NewBlogAndCategoryEntity(
 			types.INITIAL_ID,
 			c.ID,
-			userId,
+			types.INITIAL_ID,
 		)
 		if err != nil {
 			return &models.BlogEntity{}, err
@@ -70,6 +70,7 @@ func (bc *BlogController) uToModel(ctx c.Context, req *request.BlogUpdateRequest
 		req.Title,
 		req.Context,
 		categories,
+		[]models.CategoryEntity{},
 		req.Revision,
 		time.Time{},
 		time.Time{},

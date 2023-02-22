@@ -8,9 +8,9 @@ import (
 
 type BlogWithCategoryRepository struct{}
 
-func (repo *BlogWithCategoryRepository) BatchCreate(db *gorm.DB, obj []models.BlogAndCategoryEntity) ([]models.BlogAndCategoryEntity, error) {
+func (repo *BlogWithCategoryRepository) Create(db *gorm.DB, obj *models.BlogAndCategoryEntity) error {
 	if err := db.Create(&obj).Error; err != nil {
-		return []models.BlogAndCategoryEntity{}, errors.Wrap(errors.NewCustomError(), errors.REPO0015, gorm.ErrInvalidData.Error())
+		return errors.Wrap(errors.NewCustomError(), errors.REPO0015, gorm.ErrInvalidData.Error())
 	}
-	return obj, nil
+	return nil
 }

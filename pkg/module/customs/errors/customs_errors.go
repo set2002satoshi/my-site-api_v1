@@ -65,7 +65,6 @@ var ErrMap = map[string]string{
 	REPO0014: "failed get categories",
 	REPO0015: "create blog with category failed",
 
-
 	TYPE0001: "id is less than or equal to zero",
 
 	DB0001: "failure db connect",

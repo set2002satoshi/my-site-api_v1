@@ -26,23 +26,31 @@ func NewBlogController(db config.DB) *BlogController {
 
 func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) response.ActiveBlogEntity {
 
-	categories := make([]response.BlogAndCategoryEntity, len(obj.Categories))
-	for i, c := range obj.Categories {
-		res := response.BlogAndCategoryEntity{
+	categoryIds := make([]response.BlogAndCategoryEntity, len(obj.GetBlogAndCategories()))
+	categories := make([]response.ActiveCategoryEntity, len(obj.GetBlogAndCategories()))
+	for i, c := range obj.GetBlogAndCategories() {
+		categoryId := response.BlogAndCategoryEntity{
 			Id:         int(c.GetId()),
 			BlogId:     int(c.GetBlogId()),
 			CategoryId: int(c.GetCategoryId()),
 		}
-		categories[i] = res
+		categoryIds[i] = categoryId
 	}
-
+	for i, c := range obj.GetCategories() {
+		category := response.ActiveCategoryEntity{
+			Id:           int(c.GetCategoryID()),
+			CategoryName: c.GetCategoryName(),
+		}
+		categories[i] = category
+	}
 	return response.ActiveBlogEntity{
-		BlogId:     int(obj.GetBlogId()),
-		UserId:     int(obj.GetUserId()),
-		UserName:   obj.GetUserName(),
-		Title:      obj.GetTitle(),
-		Content:    obj.GetContent(),
-		Categories: categories,
+		BlogId:      int(obj.GetBlogId()),
+		UserId:      int(obj.GetUserId()),
+		UserName:    obj.GetUserName(),
+		Title:       obj.GetTitle(),
+		Content:     obj.GetContent(),
+		Categories:  categories,
+		CategoryIds: categoryIds,
 		Option: response.Options{
 			Revision:  int(obj.GetRevision()),
 			CreatedAt: obj.GetCreatedAt(),
@@ -54,22 +62,31 @@ func (bc *BlogController) convertActiveBlogToDTO(obj *models.BlogEntity) respons
 func (bc *BlogController) convertActiveBlogToDTOs(obj []*models.BlogEntity) []response.ActiveBlogEntity {
 	be := make([]response.ActiveBlogEntity, len(obj))
 	for i, bl := range obj {
-		categories := make([]response.BlogAndCategoryEntity, len(bl.Categories))
-		for i, c := range bl.Categories {
-			res := response.BlogAndCategoryEntity{
+		categoryIds := make([]response.BlogAndCategoryEntity, len(bl.GetBlogAndCategories()))
+		categories := make([]response.ActiveCategoryEntity, len(bl.GetCategories()))
+		for i, c := range bl.GetBlogAndCategories() {
+			categoryId := response.BlogAndCategoryEntity{
 				Id:         int(c.GetId()),
 				BlogId:     int(c.GetBlogId()),
 				CategoryId: int(c.GetCategoryId()),
 			}
-			categories[i] = res
+			categoryIds[i] = categoryId
+		}
+		for i, c := range bl.GetCategories() {
+			category := response.ActiveCategoryEntity{
+				Id:           int(c.GetCategoryID()),
+				CategoryName: c.GetCategoryName(),
+			}
+			categories[i] = category
 		}
 		blogTmp := response.ActiveBlogEntity{
-			BlogId:     int(bl.GetBlogId()),
-			UserId:     int(bl.GetUserId()),
-			UserName:   bl.GetUserName(),
-			Title:      bl.GetTitle(),
-			Content:    bl.GetContent(),
-			Categories: categories,
+			BlogId:      int(bl.GetBlogId()),
+			UserId:      int(bl.GetUserId()),
+			UserName:    bl.GetUserName(),
+			Title:       bl.GetTitle(),
+			Content:     bl.GetContent(),
+			Categories:  categories,
+			CategoryIds: categoryIds,
 			Option: response.Options{
 				Revision:  int(bl.GetRevision()),
 				CreatedAt: bl.GetCreatedAt(),
@@ -84,22 +101,31 @@ func (bc *BlogController) convertActiveBlogToDTOs(obj []*models.BlogEntity) []re
 func (bc *BlogController) convertActiveUserWithBlogToDTO(obj *models.UserEntity) response.ActiveUserEntities {
 	be := make([]response.ActiveBlogEntity, len(obj.GetBlogs()))
 	for i, bl := range obj.GetBlogs() {
-		categories := make([]response.BlogAndCategoryEntity, len(bl.Categories))
-		for i, c := range bl.Categories {
-			res := response.BlogAndCategoryEntity{
+		categoryIds := make([]response.BlogAndCategoryEntity, len(bl.GetBlogAndCategories()))
+		categories := make([]response.ActiveCategoryEntity, len(bl.GetCategories()))
+		for i, c := range bl.GetBlogAndCategories() {
+			categoryId := response.BlogAndCategoryEntity{
 				Id:         int(c.GetId()),
 				BlogId:     int(c.GetBlogId()),
 				CategoryId: int(c.GetCategoryId()),
 			}
-			categories[i] = res
+			categoryIds[i] = categoryId
+		}
+		for i, c := range bl.GetCategories() {
+			category := response.ActiveCategoryEntity{
+				Id:           int(c.GetCategoryID()),
+				CategoryName: c.GetCategoryName(),
+			}
+			categories[i] = category
 		}
 		blogTmp := response.ActiveBlogEntity{
-			BlogId:     int(bl.GetBlogId()),
-			UserId:     int(bl.GetUserId()),
-			UserName:   bl.GetUserName(),
-			Title:      bl.GetTitle(),
-			Content:    bl.GetContent(),
-			Categories: categories,
+			BlogId:      int(bl.GetBlogId()),
+			UserId:      int(bl.GetUserId()),
+			UserName:    bl.GetUserName(),
+			Title:       bl.GetTitle(),
+			Content:     bl.GetContent(),
+			Categories:  categories,
+			CategoryIds: categoryIds,
 			Option: response.Options{
 				Revision:  int(bl.GetRevision()),
 				CreatedAt: bl.GetCreatedAt(),

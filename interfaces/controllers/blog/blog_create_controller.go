@@ -52,12 +52,12 @@ func (bc *BlogController) cToModel(ctx c.Context, req *request.BlogCreateRequest
 	}
 	userId, _ := strconv.Atoi(userSId.(string))
 
-	categories := make([]models.BlogAndCategoryEntity,1)
+	categories := make([]models.BlogAndCategoryEntity, len(req.Categories))
 	for i, c := range req.Categories {
 		category, err := models.NewBlogAndCategoryEntity(
 			types.INITIAL_ID,
+			types.INITIAL_ID,
 			c.ID,
-			userId,
 		)
 		if err != nil {
 			return &models.BlogEntity{}, err
@@ -72,6 +72,7 @@ func (bc *BlogController) cToModel(ctx c.Context, req *request.BlogCreateRequest
 		req.Title,
 		req.Context,
 		categories,
+		[]models.CategoryEntity{},
 		types.INITIAL_REVISION,
 		time.Time{},
 		time.Time{},
