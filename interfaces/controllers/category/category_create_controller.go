@@ -46,6 +46,7 @@ func (cc *CategoryController) cToModel(ctx c.Context, req *request.CategoryCreat
 	return models.NewCategoryEntity(
 		types.INITIAL_ID,
 		req.CategoryName,
+		[]models.BlogEntity{},
 	)
 }
 

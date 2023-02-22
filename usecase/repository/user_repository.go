@@ -1,4 +1,4 @@
-package user
+package repository
 
 import (
 	"github.com/set2002satoshi/my-site-api/models"

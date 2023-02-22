@@ -1,39 +1,89 @@
-package blog
+package service
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/set2002satoshi/my-site-api/models"
+	"github.com/set2002satoshi/my-site-api/pkg/module/customs/types"
 	"github.com/set2002satoshi/my-site-api/usecase"
-	"github.com/set2002satoshi/my-site-api/usecase/user"
+	repo "github.com/set2002satoshi/my-site-api/usecase/repository"
+	"gorm.io/gorm"
 )
 
 type BlogInteractor struct {
-	DB       usecase.DBRepository
-	BlogRepo BlogRepository
-	UserRepo user.UserRepository
+	DB                   usecase.DBRepository
+	UserRepo             repo.UserRepository
+	BlogRepo             repo.BlogRepository
+	CategoryRepo         repo.CategoryRepository
+	BlogWithCategoryRepo repo.BlogWithCategoryRepository
 }
 
 func (bi *BlogInteractor) Register(obj *models.BlogEntity) (*models.BlogEntity, error) {
-	db := bi.DB.Connect()
-	userInfo, err := bi.UserRepo.GetById(db, int(obj.GetUserId()))
+	tx := bi.DB.Begin()
+
+	userInfo, err := bi.UserRepo.GetById(tx, int(obj.GetUserId()))
 	if err != nil {
+		tx.Rollback()
 		return nil, err
 	}
+
 	applyBlog, err := models.NewBlogEntity(
 		int(obj.GetBlogId()),
 		int(obj.GetUserId()),
 		userInfo.GetUserName(),
 		obj.GetTitle(),
 		obj.GetContent(),
+		obj.GetBlogAndCategories(),
+		[]models.CategoryEntity{},
 		int(obj.GetRevision()),
 		obj.GetCreatedAt(),
 		obj.GetUpdatedAt(),
 	)
 	if err != nil {
+		tx.Rollback()
 		return nil, err
 	}
-	return bi.BlogRepo.Create(db, applyBlog)
+
+	appliedBlog, err := bi.BlogRepo.Create(tx, applyBlog)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	err = bi.CreateRelatedBlogWithCategories(tx, obj.GetBlogAndCategories(), int(appliedBlog.GetBlogId()))
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	appliedCategories, err := bi.RetrieveCategoryEntityFromCategoryIds(tx, obj.GetBlogAndCategories())
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	appliedBlogWithCategories, err := models.NewBlogEntity(
+		int(appliedBlog.GetBlogId()),
+		int(appliedBlog.GetUserId()),
+		userInfo.GetUserName(),
+		appliedBlog.GetTitle(),
+		appliedBlog.GetContent(),
+		obj.GetBlogAndCategories(),
+		appliedCategories,
+		int(appliedBlog.GetRevision()),
+		appliedBlog.GetCreatedAt(),
+		appliedBlog.GetUpdatedAt(),
+	)
+
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		return &models.BlogEntity{}, err
+	}
+
+	fmt.Println(appliedBlogWithCategories)
+
+	return appliedBlogWithCategories, err
 }
 
 func (bi *BlogInteractor) FindById(id int) (*models.UserEntity, error) {
@@ -76,6 +126,8 @@ func (bi *BlogInteractor) Update(obj *models.BlogEntity) (*models.BlogEntity, er
 		currentBlog.GetUserName(),
 		obj.GetTitle(),
 		obj.GetContent(),
+		obj.GetBlogAndCategories(),
+		[]models.CategoryEntity{},
 		int(currentBlog.GetRevision()),
 		currentBlog.GetCreatedAt(),
 		time.Now(),
@@ -94,6 +146,36 @@ func (bi *BlogInteractor) Update(obj *models.BlogEntity) (*models.BlogEntity, er
 		return &models.BlogEntity{}, err
 	}
 	return updatedObj, nil
+}
+
+func (bi *BlogInteractor) CreateRelatedBlogWithCategories(tx *gorm.DB, obj []models.BlogAndCategoryEntity, blogId int) (err error) {
+	for _, v := range obj {
+		ids, err := models.NewBlogAndCategoryEntity(
+			types.INITIAL_ID,
+			blogId,
+			int(v.GetCategoryId()),
+		)
+		if err != nil {
+			return err
+		}
+		err = bi.BlogWithCategoryRepo.Create(tx, ids)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (bi *BlogInteractor) RetrieveCategoryEntityFromCategoryIds(tx *gorm.DB, categoryIds []models.BlogAndCategoryEntity) ([]models.CategoryEntity, error) {
+	CEs := make([]models.CategoryEntity, len(categoryIds))
+	for i, v := range categoryIds {
+		ce, err := bi.CategoryRepo.GetById(tx, int(v.GetCategoryId()))
+		if err != nil {
+			return make([]models.CategoryEntity, 0), err
+		}
+		CEs[i] = *ce
+	}
+	return CEs, nil
 }
 
 func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEntity) (*models.UserEntity, error) {

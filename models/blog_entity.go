@@ -12,12 +12,13 @@ type BlogEntity struct {
 	UserId   types.IDENTIFICATION
 	UserName string `gorm:"not null"`
 	// UserICON string `gorm:"not null"`
-	Title      string                  `gorm:"not null;max:26"`
-	Content    string                  `gorm:"not null;max:100"`
-	Categories []BlogAndCategoryEntity `gorm:"foreignKey:CategoryId"`
-	Revision   types.REVISION
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	Title       string                  `gorm:"not null;max:26"`
+	Content     string                  `gorm:"not null;max:100"`
+	CategoryIds []BlogAndCategoryEntity `gorm:"foreignKey:BlogId"`
+	categories  []CategoryEntity        `gorm:"-:migration"`
+	Revision    types.REVISION
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 func NewBlogEntity(
@@ -26,6 +27,8 @@ func NewBlogEntity(
 	userName string,
 	title string,
 	content string,
+	blogIdAndCategories []BlogAndCategoryEntity,
+	categories []CategoryEntity,
 	revision int,
 	createdAt time.Time,
 	updatedAt time.Time,
@@ -37,6 +40,8 @@ func NewBlogEntity(
 	err = errors.Combine(err, be.setUserName(userName))
 	err = errors.Combine(err, be.setTitle(title))
 	err = errors.Combine(err, be.setContent(content))
+	err = errors.Combine(err, be.setBlogAndCategories(blogIdAndCategories))
+	err = errors.Combine(err, be.setCategories(categories))
 	err = errors.Combine(err, be.setRevision(revision))
 	err = errors.Combine(err, be.setCreatedAt(createdAt))
 	err = errors.Combine(err, be.setUpdatedAt(updatedAt))
@@ -64,6 +69,14 @@ func (be *BlogEntity) GetTitle() string {
 
 func (be *BlogEntity) GetContent() string {
 	return be.Content
+}
+
+func (be *BlogEntity) GetBlogAndCategories() []BlogAndCategoryEntity {
+	return be.CategoryIds
+}
+
+func (be *BlogEntity) GetCategories() []CategoryEntity {
+	return be.categories
 }
 
 func (be *BlogEntity) GetRevision() types.REVISION {
@@ -108,6 +121,16 @@ func (be *BlogEntity) setTitle(title string) error {
 
 func (be *BlogEntity) setContent(content string) error {
 	be.Content = content
+	return nil
+}
+
+func (be *BlogEntity) setBlogAndCategories(categories []BlogAndCategoryEntity) error {
+	be.CategoryIds = categories
+	return nil
+}
+
+func (be *BlogEntity) setCategories(objs []CategoryEntity) error {
+	be.categories = objs
 	return nil
 }
 

@@ -8,15 +8,17 @@ type (
 		ID int `json:"id"`
 	}
 	BlogCreateRequest struct {
-		Title   string `json:"title"`
-		Context string `json:"context"`
+		Title      string                    `json:"title"`
+		Context    string                    `json:"context"`
+		Categories []CategoryFindByIdRequest `json:"category"`
 	}
 
 	BlogUpdateRequest struct {
-		ID       int    `json:"id"`
-		Title    string `json:"title"`
-		Context  string `json:"context"`
-		Revision int    `json:"revision"`
+		ID         int                       `json:"id"`
+		Title      string                    `json:"title"`
+		Context    string                    `json:"context"`
+		Categories []CategoryFindByIdRequest `json:"category"`
+		Revision   int                       `json:"revision"`
 	}
 )
 

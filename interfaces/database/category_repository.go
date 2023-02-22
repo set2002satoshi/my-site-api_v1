@@ -1,4 +1,4 @@
-package category
+package database
 
 import (
 	"github.com/set2002satoshi/my-site-api/models"

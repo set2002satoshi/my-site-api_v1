@@ -2,21 +2,21 @@ package user
 
 import (
 	"github.com/set2002satoshi/my-site-api/interfaces/database"
-	DBUser "github.com/set2002satoshi/my-site-api/interfaces/database/user"
+	"github.com/set2002satoshi/my-site-api/interfaces/database/config"
 	"github.com/set2002satoshi/my-site-api/models"
 	"github.com/set2002satoshi/my-site-api/pkg/module/dto/response"
-	usecase "github.com/set2002satoshi/my-site-api/usecase/user"
+	"github.com/set2002satoshi/my-site-api/usecase/service"
 )
 
 type UserController struct {
-	Interactor usecase.UserInteractor
+	Interactor service.UserInteractor
 }
 
-func NewUserController(db database.DB) *UserController {
+func NewUserController(db config.DB) *UserController {
 	return &UserController{
-		Interactor: usecase.UserInteractor{
-			DB:       &database.DBRepository{DB: db},
-			UserRepo: &DBUser.UserRepository{},
+		Interactor: service.UserInteractor{
+			DB:       &config.DBRepository{DB: db},
+			UserRepo: &database.UserRepository{},
 		},
 	}
 }

@@ -1,6 +1,7 @@
 package blog
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -33,6 +34,7 @@ func (bc *BlogController) Create(ctx c.Context) {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0002, err.Error()), res))
 		return
 	}
+	fmt.Println(reqModel.GetBlogAndCategories())
 	createdBlog, err := bc.Interactor.Register(reqModel)
 	if err != nil {
 		ctx.JSON(http.StatusOK, errors.Response(errors.Wrap(errors.NewCustomError(), errors.ERR0000, err.Error()), res))
@@ -50,12 +52,27 @@ func (bc *BlogController) cToModel(ctx c.Context, req *request.BlogCreateRequest
 	}
 	userId, _ := strconv.Atoi(userSId.(string))
 
+	categories := make([]models.BlogAndCategoryEntity, len(req.Categories))
+	for i, c := range req.Categories {
+		category, err := models.NewBlogAndCategoryEntity(
+			types.INITIAL_ID,
+			types.INITIAL_ID,
+			c.ID,
+		)
+		if err != nil {
+			return &models.BlogEntity{}, err
+		}
+		categories[i] = *category
+	}
+
 	return models.NewBlogEntity(
 		types.INITIAL_ID,
 		userId,
 		types.DEFAULT_NAME,
 		req.Title,
 		req.Context,
+		categories,
+		[]models.CategoryEntity{},
 		types.INITIAL_REVISION,
 		time.Time{},
 		time.Time{},
