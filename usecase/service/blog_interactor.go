@@ -96,7 +96,13 @@ func (bi *BlogInteractor) FindById(id int) (*models.UserEntity, error) {
 	if err != nil {
 		return nil, err
 	}
-	return bi.blogToUser(user, blog)
+
+	blogWithCategoryIds, err := bi.BlogWithCategoryRepo.GetAllByBlogId(db, int(blog.GetBlogId()))
+	if err != nil {
+		return nil, err
+	}
+
+	return bi.blogToUser(db, user, blog, blogWithCategoryIds)
 }
 
 func (bi *BlogInteractor) FindAll() ([]*models.BlogEntity, error) {
@@ -178,10 +184,25 @@ func (bi *BlogInteractor) RetrieveCategoryEntityFromCategoryIds(tx *gorm.DB, cat
 	return CEs, nil
 }
 
-func (bi *BlogInteractor) blogToUser(user *models.UserEntity, blog models.BlogEntity) (*models.UserEntity, error) {
+func (bi *BlogInteractor) blogToUser(db *gorm.DB, user *models.UserEntity, blog models.BlogEntity, blogWithCategoryIds []models.BlogAndCategoryEntity) (*models.UserEntity, error) {
 	BEs := make([]models.BlogEntity, 1)
-	BEs[0] = blog
-
+	categories, _ := bi.RetrieveCategoryEntityFromCategoryIds(db, blogWithCategoryIds)
+	blogWithCategory, err := models.NewBlogEntity(
+		int(blog.GetBlogId()),
+		int(blog.GetUserId()),
+		blog.GetUserName(),
+		blog.GetTitle(),
+		blog.GetContent(),
+		blog.GetBlogAndCategories(),
+		categories,
+		int(blog.GetRevision()),
+		blog.GetCreatedAt(),
+		blog.GetUpdatedAt(),
+	)
+	if err != nil {
+		return nil, err
+	}
+	BEs[0] = *blogWithCategory
 	return models.NewUserEntity(
 		int(user.GetUserId()),
 		user.GetEmail(),
