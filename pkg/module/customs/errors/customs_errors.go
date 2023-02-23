@@ -23,6 +23,7 @@ const (
 	REPO0013 = "REPO0013"
 	REPO0014 = "REPO0014"
 	REPO0015 = "REPO0015"
+	REPO0016 = "REPO0016"
 
 	TYPE0001 = "TYPE0001"
 
@@ -64,6 +65,7 @@ var ErrMap = map[string]string{
 	REPO0013: "failed get category",
 	REPO0014: "failed get categories",
 	REPO0015: "create blog with category failed",
+	REPO0016: "failed get blog with category",
 
 	TYPE0001: "id is less than or equal to zero",
 
