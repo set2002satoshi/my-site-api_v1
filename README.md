@@ -1,6 +1,8 @@
 ## 無理やり作った感が否めない
 my-site-api_v2を発見した課題を解決します。
 
+デプロイするのが難しい
+
 ```
 POST -> /api/user/get
 POST -> /api/users
