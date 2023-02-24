@@ -14,9 +14,9 @@ POST -> /api/blog
 POST -> /api/blog/get  
 POST -> /api/blog/create
 POST -> /api/blog/update
-POST -> /api/blog/delete
+POST -> /api/blog/delete  // エラーが返されるかも
 POST -> /api/category 
 POST -> /api/category/get
 POST -> /api/category/create
-POST -> /api/category/delete // エラーが返されるかも
+POST -> /api/category/delete 
 ```
