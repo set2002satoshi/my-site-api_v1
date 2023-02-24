@@ -108,7 +108,39 @@ func (bi *BlogInteractor) FindById(id int) (*models.UserEntity, error) {
 
 func (bi *BlogInteractor) FindAll() ([]*models.BlogEntity, error) {
 	db := bi.DB.Connect()
-	return bi.BlogRepo.GetAll(db)
+	blogs, err := bi.BlogRepo.GetAll(db)
+	if err != nil {
+		return nil, err
+	}
+
+	blogWithCategoriesEntity := make([]*models.BlogEntity, len(blogs))
+	for i, blog := range blogs {
+		relatedBlogWithCategory, err := bi.BlogWithCategoryRepo.GetAllByBlogId(db, int(blog.GetBlogId()))
+		if err != nil {
+			return make([]*models.BlogEntity, 0), err
+		}
+		categories, err := bi.RetrieveCategoryEntityFromCategoryIds(db, relatedBlogWithCategory)
+		if err != nil {
+			return make([]*models.BlogEntity, 0), err
+		}
+		blogWithCategories, err := models.NewBlogEntity(
+			int(blog.GetBlogId()),
+			int(blog.GetUserId()),
+			blog.GetUserName(),
+			blog.GetTitle(),
+			blog.GetContent(),
+			relatedBlogWithCategory,
+			categories,
+			int(blog.GetRevision()),
+			blog.GetCreatedAt(),
+			blog.GetUpdatedAt(),
+		)
+		if err != nil {
+			return make([]*models.BlogEntity, 0), err
+		}
+		blogWithCategoriesEntity[i] = blogWithCategories
+	}
+	return blogWithCategoriesEntity, nil
 }
 
 func (bi *BlogInteractor) Delete(id int) error {
@@ -173,6 +205,7 @@ func (bi *BlogInteractor) CreateRelatedBlogWithCategories(tx *gorm.DB, obj []mod
 	return nil
 }
 
+// blogWithCategoryのcategoryIDからcategoryEntityを参照しname返す
 func (bi *BlogInteractor) RetrieveCategoryEntityFromCategoryIds(tx *gorm.DB, categoryIds []models.BlogAndCategoryEntity) ([]models.CategoryEntity, error) {
 	CEs := make([]models.CategoryEntity, len(categoryIds))
 	for i, v := range categoryIds {
